@@ -1,14 +1,10 @@
 package tags;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class Tags {
-
 	public static int IN_VALID = -1;
-
 	public static int MAX_MSG_SIZE = 1024000; // ~1MB
-
 	public static String SESSION_OPEN_TAG = "<SESSION_REQ>";// 1
 	public static String SESSION_CLOSE_TAG = "</SESSION_REQ>";// 2
 	public static String USER_NAME_OPEN_TAG = "<USER_NAME>";// 3
@@ -46,10 +42,10 @@ public class Tags {
 	public static String SERVER_ONLINE = "RUNNING";
 	public static String SERVER_OFFLINE = "STOP";
 
-
 	public static int show(JFrame frame, String msg, boolean type) {
-		if (type)
+		if (type) {
 			return JOptionPane.showConfirmDialog(frame, msg, null, JOptionPane.YES_NO_OPTION);
+		}
 		JOptionPane.showMessageDialog(frame, msg);
 		return IN_VALID;
 	}

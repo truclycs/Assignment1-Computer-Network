@@ -82,7 +82,6 @@ public class Server {
 		return true;
 	}
 	
-	
 	private void addNewUser(String user, String ip, int port) throws Exception {
 		User newPeer = new User();		
 		if (list_users.size() == 0)				
