@@ -184,8 +184,6 @@ public class MainGui {
 		lblUsername.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		lblUsername.setBounds(75, 76, 156, 28);
 		frameMainGui.getContentPane().add(lblUsername);
-	
-			
 	}
 
 	public static int request(String msg, boolean type) {

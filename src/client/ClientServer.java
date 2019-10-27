@@ -13,7 +13,7 @@ import client.Client;
 public class ClientServer {
 
 	private String username = "";
-	private ServerSocket serverPeer;
+	private ServerSocket server;
 	private int port;
 	private boolean isStop = false;
 
@@ -28,13 +28,13 @@ public class ClientServer {
 	public ClientServer(String name) throws Exception {
 		username = name;
 		port = Client.getPort();
-		serverPeer = new ServerSocket(port);
+		server = new ServerSocket(port);
 		(new WaitPeerConnect()).start();
 	}
 	
 	public void exit() throws IOException {
 		isStop = true;
-		serverPeer.close();
+		server.close();
 	}
 
 	class WaitPeerConnect extends Thread {
@@ -47,7 +47,7 @@ public class ClientServer {
 			super.run();
 			while (!isStop) {
 				try {
-					connection = serverPeer.accept();
+					connection = server.accept();
 					getRequest = new ObjectInputStream(connection.getInputStream());
 					String msg = (String) getRequest.readObject();
 					String name = Decode.getNameRequestChat(msg);
@@ -66,7 +66,7 @@ public class ClientServer {
 				}
 			}
 			try {
-				serverPeer.close();
+				server.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
