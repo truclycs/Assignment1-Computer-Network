@@ -29,7 +29,7 @@ public class ServerGui {
 	private JLabel lblStatus;
 	private static TextArea txtMessage;
 	public static JLabel lblUserOnline;
-	ServerCore server;
+	Server server;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

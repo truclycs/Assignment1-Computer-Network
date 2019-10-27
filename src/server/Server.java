@@ -57,17 +57,20 @@ public class Server {
 		connection = server.accept();			
 		ob_input = new ObjectInputStream(connection.getInputStream());		
 		String mess = (String) ob_input.readObject();						
-		ArrayList<String> getData = Decode.getUser(mess);					
+		ArrayList<String> get_data = Decode.getUser(mess);					
 		ServerGui.updateMessage(mess);											
-		if (getData != null) {
-			if (!isExsistName(getData.get(0))) {						
-				saveNewPeer(getData.get(0), connection.getInetAddress()			
-						.toString(), Integer.parseInt(getData.get(1)));			
-				ServerGui.updateMessage(getData.get(0));	
+		if (get_data != null) {
+			if (!isExsistName(get_data.get(0))) {						
+				addNewUser(get_data.get(0), connection.getInetAddress()			
+						.toString(), Integer.parseInt(get_data.get(1)));			
+				ServerGui.updateMessage(get_data.get(0));	
 				ServerGui.updateNumberClient();
-			} else
+			} 
+			else {
 				return false;
-		} else {
+			}
+		} 
+		else {
 			int size = list_users.size();			
 			
 			Decode.updateUserOnline(list_users, mess);	
@@ -80,14 +83,13 @@ public class Server {
 	}
 	
 	
-	private void saveNewPeer(String user, String ip, int port) throws Exception {
+	private void addNewUser(String user, String ip, int port) throws Exception {
 		User newPeer = new User();		
 		if (list_users.size() == 0)				
 			list_users = new ArrayList<User>();
 		newPeer.setPeer(user, ip, port);		
 		list_users.add(newPeer);					
 	}
-	
 	
 	private boolean isExsistName(String name) throws Exception {
 		if (list_users == null)
@@ -101,11 +103,7 @@ public class Server {
 		return false;
 	}
 	
-	
-	
-	
 	public class WaitForConnect extends Thread {
-
 		@Override
 		public void run() {
 			super.run();
@@ -114,20 +112,23 @@ public class Server {
 					if (connect()) {
 						if (exit) {
 							exit = false;
-						} else {
+						} 
+						else {
 							ob_output = new ObjectOutputStream(connection.getOutputStream());
 							ob_output.writeObject(sendSessionAccept());
 							ob_output.flush();
 							ob_output.close();
 						}
-					} else {
+					} 
+					else {
 						ob_output = new ObjectOutputStream(connection.getOutputStream());
 						ob_output.writeObject(Tags.SESSION_DENY_TAG);
 						ob_output.flush();
 						ob_output.close();
 					}
 				}
-			} catch (Exception e) {
+			} 
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

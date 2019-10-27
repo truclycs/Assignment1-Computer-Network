@@ -1,12 +1,9 @@
 package data;
-
 import java.io.Serializable;
-
 import tags.Tags;
 
 @SuppressWarnings("serial")
 public class DataFile implements Serializable{
-
 	@SuppressWarnings("unused")
 	private String openTags = Tags.FILE_DATA_OPEN_TAG;
 	@SuppressWarnings("unused")
