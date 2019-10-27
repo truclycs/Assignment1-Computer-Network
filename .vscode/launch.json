@@ -1,0 +1,42 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug (Launch) - Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-ChatGui<computer_network>",
+            "request": "launch",
+            "mainClass": "client.ChatGui",
+            "projectName": "computer_network"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-MainGui<computer_network>",
+            "request": "launch",
+            "mainClass": "client.MainGui",
+            "projectName": "computer_network"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Login<computer_network>",
+            "request": "launch",
+            "mainClass": "login.Login",
+            "projectName": "computer_network"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-ServerGui<computer_network>",
+            "request": "launch",
+            "mainClass": "server.ServerGui",
+            "projectName": "computer_network"
+        }
+    ]
+}
