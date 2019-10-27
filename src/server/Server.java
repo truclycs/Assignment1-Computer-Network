@@ -28,16 +28,16 @@ public class Server {
 		String mess = Tags.SESSION_ACCEPT_OPEN_TAG;
 		int size = list_users.size();				
 		for (int i = 0; i < size; i++) {		
-			User peer = list_users.get(i);	
+			User user = list_users.get(i);	
 			mess += Tags.USER_OPEN_TAG;			
 			mess += Tags.USER_NAME_OPEN_TAG;
-			mess += peer.getName();
+			mess += user.getName();
 			mess += Tags.USER_NAME_CLOSE_TAG;
 			mess += Tags.IP_OPEN_TAG;
-			mess += peer.getHost();
+			mess += user.getHost();
 			mess += Tags.IP_CLOSE_TAG;
 			mess += Tags.PORT_OPEN_TAG;
-			mess += peer.getPort();
+			mess += user.getPort();
 			mess += Tags.PORT_CLOSE_TAG;
 			mess += Tags.USER_CLOSE_TAG;			
 		}
@@ -95,8 +95,8 @@ public class Server {
 			return false;
 		int size = list_users.size();
 		for (int i = 0; i < size; i++) {
-			User peer = list_users.get(i);
-			if (peer.getName().equals(name))
+			User user = list_users.get(i);
+			if (user.getName().equals(name))
 				return true;
 		}
 		return false;

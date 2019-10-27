@@ -9,59 +9,58 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 
-import data.Peer;
+import data.User;
 import tags.Decode;
 import tags.Encode;
 import tags.Tags;
 
 public class Client {
 
-	public static ArrayList<Peer> clientarray = null;
+	public static ArrayList<User> clientarray = null;
 	private ClientServer server;
 	private InetAddress IPserver;
-	private int portServer = 8080;
-	private String nameUser = "";
-	private boolean isStop = false;
-	private static int portClient = 10000; 
-	private int timeOut = 10000;  //time to each request is 10 seconds.
-	private Socket socketClient;
-	private ObjectInputStream serverInputStream;
-	private ObjectOutputStream serverOutputStream;
-
+	private int port_server = 8080;
+	private String username = "";
+	private boolean stop = false;
+	private static int port_client = 10000; 
+	private int timeout = 10000;  //time to each request is 10 seconds.
+	private Socket socket_client;
+	private ObjectInputStream server_input;
+	private ObjectOutputStream server_output;
 	
-	public Client(String arg, int arg1, String name, String dataUser) throws Exception {
+	public Client(String arg, int arg1, String name, String data_user) throws Exception {
 		IPserver = InetAddress.getByName(arg);
-		nameUser = name;
-		portClient = arg1;
-		clientarray = Decode.getAllUser(dataUser);
+		username = name;
+		port_client = arg1;
+		clientarray = Decode.getAllUser(data_user);
 		new Thread(new Runnable(){
 			@Override
 			public void run() {
 				updateFriend();
 			}
 		}).start();
-		server = new ClientServer(nameUser);
+		server = new ClientServer(username);
 		(new Request()).start();
 	}
 
 	public static int getPort() {
-		return portClient;
+		return port_client;
 	}
 
 	public void request() throws Exception {
-		socketClient = new Socket();
-		SocketAddress addressServer = new InetSocketAddress(IPserver, portServer);
-		socketClient.connect(addressServer);
-		String msg = Encode.sendRequest(nameUser);
-		serverOutputStream = new ObjectOutputStream(socketClient.getOutputStream());
-		serverOutputStream.writeObject(msg);
-		serverOutputStream.flush();
-		serverInputStream = new ObjectInputStream(socketClient.getInputStream());
-		msg = (String) serverInputStream.readObject();
-		serverInputStream.close();
+		socket_client = new Socket();
+		SocketAddress address_server = new InetSocketAddress(IPserver, port_server);
+		socket_client.connect(address_server);
+		String mess = Encode.sendRequest(username);
+		server_output = new ObjectOutputStream(socket_client.getOutputStream());
+		server_output.writeObject(mess);
+		server_output.flush();
+		server_input = new ObjectInputStream(socket_client.getInputStream());
+		mess = (String) server_input.readObject();
+		server_input.close();
 		//		just for test
-		System.out.println("toantoan" + msg); //test server return to user
-		clientarray = Decode.getAllUser(msg);
+		System.out.println("Return to server? " + mess); //test server return to user
+		clientarray = Decode.getAllUser(mess);
 		new Thread(new Runnable() {
 
 			@Override
@@ -75,9 +74,9 @@ public class Client {
 		@Override
 		public void run() {
 			super.run();
-			while (!isStop) {
+			while (!stop) {
 				try {
-					Thread.sleep(timeOut);
+					Thread.sleep(timeout);
 					request();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -88,43 +87,38 @@ public class Client {
 
 	public void intialNewChat(String IP, int host, String guest) throws Exception {
 		final Socket connclient = new Socket(InetAddress.getByName(IP), host);
-		ObjectOutputStream sendrequestChat = new ObjectOutputStream(connclient.getOutputStream());
-		sendrequestChat.writeObject(Encode.sendRequestChat(nameUser));
-		sendrequestChat.flush();
-		ObjectInputStream receivedChat = new ObjectInputStream(connclient.getInputStream());
-		String msg = (String) receivedChat.readObject();
-		if (msg.equals(Tags.CHAT_DENY_TAG)) {
+		ObjectOutputStream send_request = new ObjectOutputStream(connclient.getOutputStream());
+		send_request.writeObject(Encode.sendRequestChat(username));
+		send_request.flush();
+		ObjectInputStream recieved = new ObjectInputStream(connclient.getInputStream());
+		String mess = (String) recieved.readObject();
+		if (mess.equals(Tags.CHAT_DENY_TAG)) {
 			MainGui.request("Your friend denied connect with you!", false);
 			connclient.close();
 			return;
 		}
-		//not if
-		new ChatGui(nameUser, guest, connclient, portClient);
-
+		new ChatGui(username, guest, connclient, port_client);
 	}
 
 	public void exit() throws IOException, ClassNotFoundException {
-		isStop = true;
-		socketClient = new Socket();
-		SocketAddress addressServer = new InetSocketAddress(IPserver, portServer);
-		socketClient.connect(addressServer);
-		String msg = Encode.exit(nameUser);
-		serverOutputStream = new ObjectOutputStream(socketClient.getOutputStream());
-		serverOutputStream.writeObject(msg);
-		serverOutputStream.flush();
-		serverOutputStream.close();
+		stop = true;
+		socket_client = new Socket();
+		SocketAddress address_server = new InetSocketAddress(IPserver, port_server);
+		socket_client.connect(address_server);
+		String mess = Encode.exit(username);
+		server_output = new ObjectOutputStream(socket_client.getOutputStream());
+		server_output.writeObject(mess);
+		server_output.flush();
+		server_output.close();
 		server.exit();
 	}
 
 	public void updateFriend(){
 		int size = clientarray.size();
 		MainGui.resetList();
-		//while loop
-		int i = 0;
-		while (i < size) {
-			if (!clientarray.get(i).getName().equals(nameUser))
+		for (int i = 0; i < size; i++) {
+			if (!clientarray.get(i).getName().equals(username))
 				MainGui.updateFriendMainGui(clientarray.get(i).getName());
-			i++;
 		}
 	}
 }

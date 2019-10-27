@@ -187,7 +187,6 @@ public class MainGui {
 	
 			
 	}
-		
 
 	public static int request(String msg, boolean type) {
 		JFrame frameMessage = new JFrame();

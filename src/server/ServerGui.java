@@ -22,7 +22,6 @@ import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
 public class ServerGui {
-
 	public static int port = 8080;
 	private JFrame frmServerMangement;
 	private JTextField txtIP, txtPort;
@@ -51,6 +50,7 @@ public class ServerGui {
 	public static String getLabelUserOnline() {
 		return lblUserOnline.getText();
 	}
+
 	public static void updateMessage(String msg) {
 		txtMessage.append(msg + "\n");
 	}
@@ -95,10 +95,10 @@ public class ServerGui {
 			e.printStackTrace();
 		}
 
-		JLabel lblNewLabel = new JLabel("PORT");
-		lblNewLabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-		lblNewLabel.setBounds(428, 120, 48, 16);			////// Vi tri lbl Port
-		frmServerMangement.getContentPane().add(lblNewLabel);
+		JLabel lbl_new_label = new JLabel("PORT");
+		lbl_new_label.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		lbl_new_label.setBounds(428, 120, 48, 16);			////// Vi tri lbl Port
+		frmServerMangement.getContentPane().add(lbl_new_label);
 
 		txtPort = new JTextField();
 		txtPort.setFont(new Font("Segoe UI", Font.PLAIN, 13));
@@ -108,13 +108,13 @@ public class ServerGui {
 		frmServerMangement.getContentPane().add(txtPort);			///// Vi tri cua text Port
 		txtPort.setText("8080");
 
-		JButton btnStart = new JButton("START");
-		btnStart.setBackground(UIManager.getColor("RadioButtonMenuItem.selectionBackground"));
-		btnStart.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		JButton btn_start = new JButton("START");
+		btn_start.setBackground(UIManager.getColor("RadioButtonMenuItem.selectionBackground"));
+		btn_start.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		
-		btnStart.setBounds(416, 155, 143, 43);			/////// Vi tri button START
-		frmServerMangement.getContentPane().add(btnStart);
-		btnStart.setIcon(new javax.swing.ImageIcon(ServerGui.class.getResource("/image/start.png")));
+		btn_start.setBounds(416, 155, 143, 43);			/////// Vi tri button START
+		frmServerMangement.getContentPane().add(btn_start);
+		btn_start.setIcon(new javax.swing.ImageIcon(ServerGui.class.getResource("/image/start.png")));
 		
 //		BufferedImage img = null;
 //		try {
@@ -127,11 +127,11 @@ public class ServerGui {
 //		ImageIcon imageIcon = new ImageIcon(dimg);
 
 		
-		JLabel lblNhom = new JLabel("Server Management");
-		lblNhom.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblNhom.setBounds(169, 13, 268, 76);
-		lblNhom.setIcon(new javax.swing.ImageIcon(ServerGui.class.getResource("/image/servermanager64x64.png")));
-		frmServerMangement.getContentPane().add(lblNhom);
+		JLabel lbl_group = new JLabel("Server Management");
+		lbl_group.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		lbl_group.setBounds(169, 13, 268, 76);
+		lbl_group.setIcon(new javax.swing.ImageIcon(ServerGui.class.getResource("/image/servermanager64x64.png")));
+		frmServerMangement.getContentPane().add(lbl_group);
 
 		txtMessage = new TextArea();					
 		txtMessage.setBackground(Color.BLACK);
@@ -203,11 +203,11 @@ public class ServerGui {
 		
 		JMenuItem mntmSoftware = new JMenuItem("Software");
 		mnNewMenu.add(mntmSoftware);
-		btnStart.addActionListener(new ActionListener() {
+		btn_start.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					server = new ServerCore(8080);
+					server = new Server(8080);
 					ServerGui.updateMessage("START SERVER");
 					lblStatus.setText("<html><font color='green'>RUNNING...</font></html>");
 				} catch (Exception e) {
