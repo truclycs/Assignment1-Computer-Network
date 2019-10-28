@@ -3,10 +3,13 @@ package server;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.net.DatagramSocket;
 import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
-
+import java.util.Enumeration;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -89,11 +92,32 @@ public class ServerGui {
 		txtIP.setBounds(126, 114, 176, 28);				////// Vi tri text Ip
 		frmServerMangement.getContentPane().add(txtIP);
 		txtIP.setColumns(10);
+		
+//		try {
+//			txtIP.setText(Inet4Address.getLocalHost().getHostAddress());
+//			
+//		} catch (UnknownHostException e) {
+//			e.printStackTrace();
+//		}
+		
+//		Cach de lay dia chi ip thuong xuyen sai
+		DatagramSocket socket;
 		try {
-			txtIP.setText(Inet4Address.getLocalHost().getHostAddress());
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
+			socket = new DatagramSocket();
+			try {
+				socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			String ip = socket.getLocalAddress().getHostAddress();
+			txtIP.setText(ip);
+		} catch (SocketException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+		  
+		
 
 		JLabel lbl_new_label = new JLabel("PORT");
 		lbl_new_label.setFont(new Font("Segoe UI", Font.PLAIN, 13));

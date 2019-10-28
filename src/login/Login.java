@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import client.MainGui;
@@ -13,6 +14,7 @@ import tags.Encode;
 import tags.Tags;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -35,6 +37,8 @@ public class Login {
     private JTextField txtIP;	
     private JTextField txtUsername;
     private JButton btnLogin;
+    
+    private Boolean sex = true;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -56,13 +60,14 @@ public class Login {
 
     private void initialize() {
         frameLoginForm = new JFrame();
-        frameLoginForm.setTitle("Login Form");
+        frameLoginForm.setTitle("Login");
         frameLoginForm.setResizable(false);
-        frameLoginForm.setBounds(100, 100, 517, 343);
+        frameLoginForm.setBounds(200, 200, 550, 350);
         frameLoginForm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frameLoginForm.getContentPane().setLayout(null);
+        frameLoginForm.setLocationRelativeTo(null);
 
-        JLabel lblWelcome = new JLabel("Connect With Server\r\n");
+        JLabel lblWelcome = new JLabel("Connect to Server\r\n");
         lblWelcome.setForeground(UIManager.getColor("RadioButtonMenuItem.selectionBackground"));
         lblWelcome.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         lblWelcome.setBounds(27, 13, 312, 48);
@@ -90,8 +95,41 @@ public class Login {
         lblUserName.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         lblUserName.setBounds(10, 134, 106, 38);
         frameLoginForm.getContentPane().add(lblUserName);
-        lblUserName.setIcon(new javax.swing.ImageIcon(Login.class.getResource("/image/user.png")));
+        lblUserName.setIcon(new javax.swing.ImageIcon(Login.class.getResource("/image/boy.png")));
+        
+        JRadioButton maleBtn = new JRadioButton("male");
+        maleBtn.setMnemonic(KeyEvent.VK_B);
+        maleBtn.setActionCommand("male");
+        maleBtn.setSelected(true);
+        maleBtn.setBounds(10, 190, 80, 50);
+        maleBtn.setVisible(true);
+        frameLoginForm.getContentPane().add(maleBtn);
+        
+        JRadioButton femaleBtn = new JRadioButton("female");
+        femaleBtn.setMnemonic(KeyEvent.VK_C);
+        femaleBtn.setActionCommand("female");
+        femaleBtn.setBounds(90, 190, 80, 50);
+        femaleBtn.setVisible(true);
+        frameLoginForm.getContentPane().add(femaleBtn);
+        maleBtn.addActionListener(new ActionListener() {   
 
+            public void actionPerformed(ActionEvent arg0) {
+            	lblUserName.setIcon(new javax.swing.ImageIcon(Login.class.getResource("/image/boy.png")));
+            	femaleBtn.setSelected(false);
+            	sex = true;
+            }
+        });
+        
+        
+        femaleBtn.addActionListener(new ActionListener() {   
+
+            public void actionPerformed(ActionEvent arg0) {
+            	lblUserName.setIcon(new javax.swing.ImageIcon(Login.class.getResource("/image/girl.png")));
+            	maleBtn.setSelected(false);
+            	sex = false;
+            }
+        });
+        
         lblError = new JLabel("");
         lblError.setBounds(66, 287, 399, 20);
         frameLoginForm.getContentPane().add(lblError);
@@ -121,12 +159,12 @@ public class Login {
                 if (check_name.matcher(name).matches() && !IP.equals("")) {
                     try {
                         Random rd = new Random();
-                        int portPeer = 10000 + rd.nextInt() % 1000;
+                        int portUser = 10000 + rd.nextInt() % 1000;
                         InetAddress ipServer = InetAddress.getByName(IP);
                         int portServer = Integer.parseInt("8080");
                         Socket socketClient = new Socket(ipServer, portServer);
 
-                        String msg = Encode.getCreateAccount(name, Integer.toString(portPeer));
+                        String msg = Encode.getCreateAccount(name, Integer.toString(portUser));
                         ObjectOutputStream serverOutputStream = new ObjectOutputStream(socketClient.getOutputStream());
                         serverOutputStream.writeObject(msg);
                         serverOutputStream.flush();
@@ -139,8 +177,8 @@ public class Login {
                                 lblError.setVisible(true);
                                 return;
                             }
-                        new MainGui(IP, portPeer, name, msg);
-                    //						new menuGUI(IP, portPeer, "toan", msg);
+                        new MainGui(IP, portUser, name, msg);
+//                        
                         frameLoginForm.dispose();
                     } 
                     catch (Exception e) {
