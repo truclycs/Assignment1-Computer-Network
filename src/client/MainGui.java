@@ -84,7 +84,7 @@ public class MainGui {
 		frameMainGui.setResizable(false);
 		frameMainGui.setBounds(100, 100, 500, 560);
 //		frameMainGui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frameMainGui.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frameMainGui.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frameMainGui.getContentPane().setLayout(null);
 		
 		JLabel lblHello = new JLabel("Welcome");

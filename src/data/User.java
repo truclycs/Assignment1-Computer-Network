@@ -4,7 +4,6 @@ public class User {
 	private String username = "";
 	private String userhost = "";
 	private int userport = 0;
-	private int usersex = 1;
 
 	public void setPeer(String name, String host, int port) {
 		username = name;

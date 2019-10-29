@@ -92,13 +92,13 @@ public class Login {
 
         txtPort = new JTextField();
         txtPort.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        txtPort.setText(prtServer);
-        txtPort.setEditable(true);
+        txtPort.setText("9600");
+        txtPort.setEditable(false);
         txtPort.setColumns(10);
         txtPort.setBounds(429, 70, 65, 28);
         frameLoginForm.getContentPane().add(txtPort);
 
-        JLabel lblUserName = new JLabel("User Name");
+        JLabel lblUserName = new JLabel("Username");
         lblUserName.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         lblUserName.setBounds(10, 134, 106, 38);
         frameLoginForm.getContentPane().add(lblUserName);
@@ -136,14 +136,15 @@ public class Login {
         btnSignup.setFont(new Font("TimesRoman", Font.PLAIN, 13));
         btnSignup.setIcon(new javax.swing.ImageIcon(Login.class.getResource("/image/login.png")));
         
-//        btnSignup.addActionListener(new ActionListener() {
-//        	
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//        });
+        btnSignup.addActionListener(new ActionListener() {
+        	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				frameLoginForm.dispose();
+				SignUp.main(null);
+			}
+        });
         btnSignup.setBounds(200, 220, 130, 55);
         frameLoginForm.getContentPane().add(btnSignup);
 
@@ -155,7 +156,7 @@ public class Login {
             public void actionPerformed(ActionEvent arg0) {
                 name = txtUsername.getText();
                 pass = txtPassword.getText();
-                prtServer = txtPort.getText();
+//                prtServer = txtPort.getText();
                 boolean checkName = false;
                 
                 lblError.setVisible(false);
@@ -197,7 +198,7 @@ public class Login {
                         Random rd = new Random();
                         int portUser = 10000 + rd.nextInt() % 1000;
                         InetAddress ipServer = InetAddress.getByName(IP);
-                        int portServer = Integer.parseInt(prtServer);
+                        int portServer = 9600;
                         Socket socketClient = new Socket(ipServer, portServer);
 
                         String msg = Encode.getCreateAccount(name, Integer.toString(portUser));

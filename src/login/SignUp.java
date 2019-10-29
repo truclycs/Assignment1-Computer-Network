@@ -102,7 +102,7 @@ public class SignUp {
         txtPort.setBounds(429, 70, 65, 28);
         frameSignUpForm.getContentPane().add(txtPort);
 
-        JLabel lblUserName = new JLabel("User Name");
+        JLabel lblUserName = new JLabel("Username");
         lblUserName.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         lblUserName.setBounds(10, 134, 106, 38);
         frameSignUpForm.getContentPane().add(lblUserName);

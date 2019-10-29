@@ -49,7 +49,7 @@ public class Client {
 
 	public void request() throws Exception {
 		socket_client = new Socket();
-		SocketAddress address_server = new InetSocketAddress(IPserver, port_server);
+		SocketAddress address_server = new InetSocketAddress(IPserver, 9600);
 		socket_client.connect(address_server);
 		String mess = Encode.sendRequest(username);
 		server_output = new ObjectOutputStream(socket_client.getOutputStream());
