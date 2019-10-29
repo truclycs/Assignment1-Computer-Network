@@ -25,7 +25,7 @@ import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 
 public class ServerGui {
-	public static int port = 8080;
+	public static int port = 9600;
 	private JFrame frmServerMangement;
 	private JTextField txtIP, txtPort;
 	private JLabel lblStatus;
@@ -130,7 +130,7 @@ public class ServerGui {
 		txtPort.setColumns(10);
 		txtPort.setBounds(488, 114, 224, 28);
 		frmServerMangement.getContentPane().add(txtPort);			///// Vi tri cua text Port
-		txtPort.setText("8080");
+		txtPort.setText(Integer.toString(port));
 
 		JButton btn_start = new JButton("START");
 		btn_start.setBackground(UIManager.getColor("RadioButtonMenuItem.selectionBackground"));
@@ -231,7 +231,7 @@ public class ServerGui {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					server = new Server(8080);
+					server = new Server(port);
 					ServerGui.updateMessage("START SERVER");
 					lblStatus.setText("<html><font color='green'>RUNNING...</font></html>");
 				} catch (Exception e) {

@@ -83,9 +83,10 @@ public class MainGui {
 		frameMainGui.setTitle("Menu Chat");
 		frameMainGui.setResizable(false);
 		frameMainGui.setBounds(100, 100, 500, 560);
-		frameMainGui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frameMainGui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameMainGui.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frameMainGui.getContentPane().setLayout(null);
-
+		
 		JLabel lblHello = new JLabel("Welcome");
 		lblHello.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		lblHello.setBounds(12, 82, 70, 16);

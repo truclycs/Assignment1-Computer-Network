@@ -15,10 +15,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.Label;
-
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -49,7 +50,7 @@ public class ChatGui {
 
 	private ChatRoom chat;
 	private Socket socketChat;
-	private String nameUser = "", nameGuest = "", nameFile = "";
+	private String nameUser = "", nameGuest = "", nameFile = "", srcImgGuest;
 	private JFrame frameChatGui;
 	private JTextField textName;
 	private JPanel panelMessage;
@@ -161,7 +162,29 @@ public class ChatGui {
 		JLabel lblClientIP = new JLabel("");
 		lblClientIP.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		lblClientIP.setBounds(30, 6, 41, 40);
-		lblClientIP.setIcon(new javax.swing.ImageIcon(ChatGui.class.getResource("/image/user_chat.png")));
+		int sex = 1;
+		try {
+    		File in = new File("");
+        	String currentDirectory = in.getAbsolutePath();
+        	BufferedReader fr = new BufferedReader(new FileReader(currentDirectory + "/login/account.txt"));
+            String txtInALine;
+            while((txtInALine = fr.readLine()) != null) {
+            	String[] account = txtInALine.split(" ");
+            	if (nameGuest.equals(account[0])) {
+            		sex = Integer.parseInt(account[2]);
+            	}
+            }
+            fr.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    	if (sex == 1) {
+    		srcImgGuest = "/image/boy.png";
+    	}
+    	else{
+    		srcImgGuest = "/image/girl.png";
+    	}
+    	lblClientIP.setIcon(new javax.swing.ImageIcon(ChatGui.class.getResource(srcImgGuest)));
 		frameChatGui.getContentPane().add(lblClientIP);
 
 		textName = new JTextField(nameUser);
@@ -363,7 +386,7 @@ public class ChatGui {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				updateChat_send_Symbol(msg);
+				updateChat_send_Symbol(msg); 
 			}
 		});
 		buttonScaredIcon.setIcon(new javax.swing.ImageIcon(ChatGui.class.getResource("/image/scared.png")));
@@ -513,9 +536,6 @@ public class ChatGui {
 		scrollPane.setBounds(6, 59, 649, 291);
 		frameChatGui.getContentPane().add(scrollPane);
 		
-
-		
-	
 		
 	}
 

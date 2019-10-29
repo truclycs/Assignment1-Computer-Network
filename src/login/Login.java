@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -16,6 +17,9 @@ import tags.Tags;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
@@ -24,7 +28,8 @@ import java.awt.Font;
 import javax.swing.UIManager;
 
 public class Login {
-    private static String NAME_FAILED = "THIS NAME CONTAINS INVALID CHARACTER. PLEASE TRY AGAIN";
+    private static String USER_FAILED = "NAME DOESN'T EXIST";
+    private static String PASS_FAILED = "WRONG PASSWORD";
     private static String NAME_EXSIST = "THIS NAME IS ALREADY USED. PLEASE TRY AGAIN";
     private static String SERVER_NOT_START = "TURN ON SERVER BEFORE START";
 
@@ -33,10 +38,12 @@ public class Login {
     private JFrame frameLoginForm;
     private JTextField txtPort;
     private JLabel lblError;
-    private String name = "", IP = "";
+    private String name = "", pass = "", IP = "", prtServer = "9600";
     private JTextField txtIP;	
     private JTextField txtUsername;
+    private JPasswordField txtPassword;
     private JButton btnLogin;
+    private JButton btnSignup;
     
     private Boolean sex = true;
 
@@ -85,8 +92,8 @@ public class Login {
 
         txtPort = new JTextField();
         txtPort.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        txtPort.setText("8080");
-        txtPort.setEditable(false);
+        txtPort.setText(prtServer);
+        txtPort.setEditable(true);
         txtPort.setColumns(10);
         txtPort.setBounds(429, 70, 65, 28);
         frameLoginForm.getContentPane().add(txtPort);
@@ -95,40 +102,14 @@ public class Login {
         lblUserName.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         lblUserName.setBounds(10, 134, 106, 38);
         frameLoginForm.getContentPane().add(lblUserName);
-        lblUserName.setIcon(new javax.swing.ImageIcon(Login.class.getResource("/image/boy.png")));
+        lblUserName.setIcon(new javax.swing.ImageIcon(Login.class.getResource("/image/private-access.png")));
         
-        JRadioButton maleBtn = new JRadioButton("male");
-        maleBtn.setMnemonic(KeyEvent.VK_B);
-        maleBtn.setActionCommand("male");
-        maleBtn.setSelected(true);
-        maleBtn.setBounds(10, 190, 80, 50);
-        maleBtn.setVisible(true);
-        frameLoginForm.getContentPane().add(maleBtn);
-        
-        JRadioButton femaleBtn = new JRadioButton("female");
-        femaleBtn.setMnemonic(KeyEvent.VK_C);
-        femaleBtn.setActionCommand("female");
-        femaleBtn.setBounds(90, 190, 80, 50);
-        femaleBtn.setVisible(true);
-        frameLoginForm.getContentPane().add(femaleBtn);
-        maleBtn.addActionListener(new ActionListener() {   
-
-            public void actionPerformed(ActionEvent arg0) {
-            	lblUserName.setIcon(new javax.swing.ImageIcon(Login.class.getResource("/image/boy.png")));
-            	femaleBtn.setSelected(false);
-            	sex = true;
-            }
-        });
+        JLabel lblPassword = new JLabel("Passwords");
+        lblPassword.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        lblPassword.setBounds(46, 170, 106, 38);
+        frameLoginForm.getContentPane().add(lblPassword);
         
         
-        femaleBtn.addActionListener(new ActionListener() {   
-
-            public void actionPerformed(ActionEvent arg0) {
-            	lblUserName.setIcon(new javax.swing.ImageIcon(Login.class.getResource("/image/girl.png")));
-            	maleBtn.setSelected(false);
-            	sex = false;
-            }
-        });
         
         lblError = new JLabel("");
         lblError.setBounds(66, 287, 399, 20);
@@ -144,24 +125,79 @@ public class Login {
         txtUsername.setColumns(10);
         txtUsername.setBounds(128, 138, 366, 30);
         frameLoginForm.getContentPane().add(txtUsername);
+        
+        txtPassword = new JPasswordField();
+        txtPassword.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        txtPassword.setColumns(10);
+        txtPassword.setBounds(128, 175, 366, 30);
+        frameLoginForm.getContentPane().add(txtPassword);
+        
+        btnSignup = new JButton("Sign up");
+        btnSignup.setFont(new Font("TimesRoman", Font.PLAIN, 13));
+        btnSignup.setIcon(new javax.swing.ImageIcon(Login.class.getResource("/image/login.png")));
+        
+//        btnSignup.addActionListener(new ActionListener() {
+//        	
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//        });
+        btnSignup.setBounds(200, 220, 130, 55);
+        frameLoginForm.getContentPane().add(btnSignup);
 
         btnLogin = new JButton("Login");
-        btnLogin.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        btnLogin.setFont(new Font("TimesRoman", Font.PLAIN, 13));
         btnLogin.setIcon(new javax.swing.ImageIcon(Login.class.getResource("/image/login.png")));
         btnLogin.addActionListener(new ActionListener() {   
 
             public void actionPerformed(ActionEvent arg0) {
                 name = txtUsername.getText();
+                pass = txtPassword.getText();
+                prtServer = txtPort.getText();
+                boolean checkName = false;
+                
                 lblError.setVisible(false);
                 IP = txtIP.getText();
-
-                //must edit here
+                
+                // // !IP.equals("") 
                 if (check_name.matcher(name).matches() && !IP.equals("")) {
+                	try {
+                		File in = new File("");
+                    	String currentDirectory = in.getAbsolutePath();
+                    	BufferedReader fr = new BufferedReader(new FileReader(currentDirectory + "/login/account.txt"));
+                        String txtInALine;
+                        while((txtInALine = fr.readLine()) != null) {
+                        	String[] account = txtInALine.split(" ");
+                        	if (name.equals(account[0])) {
+                        		checkName = true;
+                        		if (pass.equals(account[1])) {
+                        			fr.close();
+                        			break;
+                        		}
+                        		lblError.setText(PASS_FAILED);
+                                lblError.setVisible(true);
+                                fr.close();
+                                return;
+                        	}
+                        }
+                        fr.close();
+                        
+                        if (!checkName) {
+                        	lblError.setText(USER_FAILED);
+                        	lblError.setVisible(true);
+                        	return;
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+                	
                     try {
                         Random rd = new Random();
                         int portUser = 10000 + rd.nextInt() % 1000;
                         InetAddress ipServer = InetAddress.getByName(IP);
-                        int portServer = Integer.parseInt("8080");
+                        int portServer = Integer.parseInt(prtServer);
                         Socket socketClient = new Socket(ipServer, portServer);
 
                         String msg = Encode.getCreateAccount(name, Integer.toString(portUser));
@@ -188,14 +224,14 @@ public class Login {
                     }
                 }
                 else {
-                    lblError.setText(NAME_FAILED);
+                    lblError.setText(USER_FAILED);
                     lblError.setVisible(true);
-                    lblError.setText(NAME_FAILED);
+                    lblError.setText(USER_FAILED);
                 }
             }
         });
         
-        btnLogin.setBounds(325, 217, 169, 63);
+        btnLogin.setBounds(360, 220, 130, 55);
         frameLoginForm.getContentPane().add(btnLogin);
         lblError.setVisible(false);
     }

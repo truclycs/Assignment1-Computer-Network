@@ -19,7 +19,7 @@ public class Client {
 	public static ArrayList<User> clientarray = null;
 	private ClientServer server;
 	private InetAddress IPserver;
-	private int port_server = 8080;
+	private int port_server = 9600;
 	private String username = "";
 	private boolean stop = false;
 	private static int port_client = 10000; 
