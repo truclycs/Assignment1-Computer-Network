@@ -1,5 +1,6 @@
 package login;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -13,6 +14,7 @@ import javax.swing.JButton;
 import client.MainGui;
 import tags.Encode;
 import tags.Tags;
+import data.BackgroundPanel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -71,8 +73,10 @@ public class Login {
         frameLoginForm.setResizable(false);
         frameLoginForm.setBounds(200, 200, 550, 350);
         frameLoginForm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frameLoginForm.setContentPane(new BackgroundPanel("/image/background.png"));
         frameLoginForm.getContentPane().setLayout(null);
         frameLoginForm.setLocationRelativeTo(null);
+       
 
         JLabel lblWelcome = new JLabel("Connect to Server\r\n");
         lblWelcome.setForeground(UIManager.getColor("RadioButtonMenuItem.selectionBackground"));
@@ -134,7 +138,8 @@ public class Login {
         
         btnSignup = new JButton("Sign up");
         btnSignup.setFont(new Font("TimesRoman", Font.PLAIN, 13));
-        btnSignup.setIcon(new javax.swing.ImageIcon(Login.class.getResource("/image/login.png")));
+        btnSignup.setBackground(Color.WHITE);
+        btnSignup.setIcon(new javax.swing.ImageIcon(Login.class.getResource("/image/signup.png")));
         
         btnSignup.addActionListener(new ActionListener() {
         	
@@ -150,7 +155,8 @@ public class Login {
 
         btnLogin = new JButton("Login");
         btnLogin.setFont(new Font("TimesRoman", Font.PLAIN, 13));
-        btnLogin.setIcon(new javax.swing.ImageIcon(Login.class.getResource("/image/login.png")));
+        btnLogin.setBackground(Color.WHITE);
+        btnLogin.setIcon(new javax.swing.ImageIcon(Login.class.getResource("/image/log-in (1).png")));
         btnLogin.addActionListener(new ActionListener() {   
 
             public void actionPerformed(ActionEvent arg0) {

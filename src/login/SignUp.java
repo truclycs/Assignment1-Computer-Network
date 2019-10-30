@@ -1,5 +1,6 @@
 package login;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -176,7 +177,8 @@ public class SignUp {
         
         btnSignUp = new JButton("Create Account and Login");
         btnSignUp.setFont(new Font("TimesRoman", Font.PLAIN, 13));
-        btnSignUp.setIcon(new javax.swing.ImageIcon(SignUp.class.getResource("/image/login.png")));
+//        btnSignUp.setBackground(Color.WHITE);
+        btnSignUp.setIcon(new javax.swing.ImageIcon(SignUp.class.getResource("/image/fingerprint.png")));
         btnSignUp.addActionListener(new ActionListener() {   
 
             public void actionPerformed(ActionEvent arg0) {
