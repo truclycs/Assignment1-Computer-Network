@@ -63,12 +63,6 @@ public class ChatGui {
 	private int portServer = 0;
 	private JTextField txtMessage;
 	private JScrollPane scrollPane;
-	private JButton btnSmileBigIcon;
-	private JButton btnCryingIcon;
-	private JButton btnSmileCryingIcon;
-	private JButton btnHeartEyeIcon;
-	private JButton buttonScaredIcon;
-	private JButton buttonSadIcon;
 
 	public ChatGui(String user, String guest, Socket socket, int port) {
 		nameUser = user;
@@ -101,14 +95,14 @@ public class ChatGui {
 	}
 
 	public void updateChat_receive(String msg) {
-		appendToPane(txtDisplayChat, "<div class='left' style='width: 40%; background-color: #f1f0f0;'>"+ msg +"</div>");
+		appendToPane(txtDisplayChat, "<div class='left' style='width: 40%; background-color: #f1f0f0; border-radius:60px;'>"+ msg +"</div>");
 	}
 
 	public void updateChat_send(String msg) {
-		appendToPane(txtDisplayChat, "<table class='bang' style='color: white; clear:both; width: 100%;'>"
+		appendToPaneSend(txtDisplayChat, "<table class='bang' style='color: white; clear:both; width: 100%;'>"
 				+ "<tr align='right'>"
 				+ "<td style='width: 59%; '></td>"
-				+ "<td style='width: 40%; background-color: #0084ff;'>" + msg 
+				+ "<td style='width: 40%; background-color: #0084ff; border-radius:60px;'>" + msg
 				+"</td> </tr>"
 				+ "</table>");
 	}
@@ -275,144 +269,7 @@ public class ChatGui {
 
 		panelMessage.add(btnSendLike);
 		
-		JButton btnSmileIcon = new JButton("");
-		btnSmileIcon.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String msg = "<img src='" + ChatGui.class.getResource("/image/smile.png") +"'></img>";
-				System.out.println("Tin nhan truoc khi bi encode: " +  msg);
-				System.out.println("Tin nhan sau khi bi encode: " +  Encode.sendMessage(msg));
-				try {
-					chat.sendMessage(Encode.sendMessage(msg));
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				updateChat_send_Symbol(msg);
-			}
-		});
-		btnSmileIcon.setBorder(new EmptyBorder(0, 0, 0, 0));
-		btnSmileIcon.setContentAreaFilled(false);
-		btnSmileIcon.setBounds(62, 96, 50, 36);
-		btnSmileIcon.setIcon(new javax.swing.ImageIcon(ChatGui.class.getResource("/image/smile.png")));
-		panelMessage.add(btnSmileIcon);
 		
-		Label label_1 = new Label("Icon");
-		label_1.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		label_1.setBounds(10, 107, 39, 22);
-		panelMessage.add(label_1);
-		
-		btnSmileBigIcon = new JButton("");
-		btnSmileBigIcon.setBorder(new EmptyBorder(0, 0, 0, 0));
-		btnSmileBigIcon.setContentAreaFilled(false);
-		btnSmileBigIcon.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String msg = "<img src='" + ChatGui.class.getResource("/image/smile_big.png") +"'></img>";
-				try {
-					chat.sendMessage(Encode.sendMessage(msg));
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				updateChat_send_Symbol(msg);
-			}		});
-		btnSmileBigIcon.setBounds(124, 96, 50, 36);
-		panelMessage.add(btnSmileBigIcon);
-		btnSmileBigIcon.setIcon(new javax.swing.ImageIcon(ChatGui.class.getResource("/image/smile_big.png")));
-		
-		btnCryingIcon = new JButton("");
-		btnCryingIcon.setBorder(new EmptyBorder(0, 0, 0, 0));
-		btnCryingIcon.setContentAreaFilled(false);
-		btnCryingIcon.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String msg = "<img src='" + ChatGui.class.getResource("/image/crying.png") +"'></img>";
-				try {
-					chat.sendMessage(Encode.sendMessage(msg));
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				updateChat_send_Symbol(msg);
-			}
-		});
-		btnCryingIcon.setBounds(186, 96, 65, 36);
-		panelMessage.add(btnCryingIcon);
-		btnCryingIcon.setIcon(new javax.swing.ImageIcon(ChatGui.class.getResource("/image/crying.png")));
-		
-		btnSmileCryingIcon = new JButton("");
-		btnSmileCryingIcon.setBorder(new EmptyBorder(0, 0, 0, 0));
-		btnSmileCryingIcon.setContentAreaFilled(false);
-		btnSmileCryingIcon.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String msg = "<img src='" + ChatGui.class.getResource("/image/smile_cry.png") +"'></img>";
-				try {
-					chat.sendMessage(Encode.sendMessage(msg));
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				updateChat_send_Symbol(msg);
-			}
-		});
-		btnSmileCryingIcon.setBounds(255, 96, 56, 39);
-		panelMessage.add(btnSmileCryingIcon);
-		btnSmileCryingIcon.setIcon(new javax.swing.ImageIcon(ChatGui.class.getResource("/image/smile_cry.png")));
-		
-		btnHeartEyeIcon = new JButton("");
-		btnHeartEyeIcon.setBorder(new EmptyBorder(0, 0, 0, 0));
-		btnHeartEyeIcon.setContentAreaFilled(false);
-		btnHeartEyeIcon.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String msg = "<img src='" + ChatGui.class.getResource("/image/heart_eye.png") +"'></img>";
-				try {
-					chat.sendMessage(Encode.sendMessage(msg));
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				updateChat_send_Symbol(msg);
-			}
-		});
-		btnHeartEyeIcon.setBounds(323, 96, 75, 36);
-		panelMessage.add(btnHeartEyeIcon);
-		btnHeartEyeIcon.setIcon(new javax.swing.ImageIcon(ChatGui.class.getResource("/image/heart_eye.png")));
-		
-		buttonScaredIcon = new JButton("");
-		buttonScaredIcon.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String msg = "<img src='" + ChatGui.class.getResource("/image/scared.png") +"'></img>";
-				try {
-					chat.sendMessage(Encode.sendMessage(msg));
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				updateChat_send_Symbol(msg); 
-			}
-		});
-		buttonScaredIcon.setIcon(new javax.swing.ImageIcon(ChatGui.class.getResource("/image/scared.png")));
-		buttonScaredIcon.setContentAreaFilled(false);
-		buttonScaredIcon.setBorder(new EmptyBorder(0, 0, 0, 0));
-		buttonScaredIcon.setBounds(394, 96, 75, 36);
-		panelMessage.add(buttonScaredIcon);
-		
-		buttonSadIcon = new JButton("");
-		buttonSadIcon.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String msg = "<img src='" + ChatGui.class.getResource("/image/sad.png") +"'></img>";
-				try {
-					chat.sendMessage(Encode.sendMessage(msg));
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				updateChat_send_Symbol(msg);
-			}
-		});
-		buttonSadIcon.setIcon(new javax.swing.ImageIcon(ChatGui.class.getResource("/image/sad.png")));
-		buttonSadIcon.setContentAreaFilled(false);
-		buttonSadIcon.setBorder(new EmptyBorder(0, 0, 0, 0));
-		buttonSadIcon.setBounds(476, 96, 75, 36);
-		panelMessage.add(buttonSadIcon);
 		
 		//action when press button Send
 		btnSend.addActionListener(new ActionListener() {
@@ -820,16 +677,31 @@ public class ChatGui {
 	}
 	
 	// send html to pane
-	  private void appendToPane(JTextPane tp, String msg){
+	private void appendToPane(JTextPane tp, String msg){
 	    HTMLDocument doc = (HTMLDocument)tp.getDocument();
 	    HTMLEditorKit editorKit = (HTMLEditorKit)tp.getEditorKit();
 	    try {
-	    	
-	      editorKit.insertHTML(doc, doc.getLength(), msg, 0, 0, null);
-	      tp.setCaretPosition(doc.getLength());
+	    	System.out.print(msg);
+		    tp.insertIcon(new javax.swing.ImageIcon(ChatGui.class.getResource(srcImgGuest)));
+	    	editorKit.insertHTML(doc, doc.getLength(), msg, 0, 0, null);
+	    	tp.setCaretPosition(doc.getLength());
 	      
-	    } catch(Exception e){
-	      e.printStackTrace();
-	    }
-	  }
+	    } 
+	    catch(Exception e){
+	    	e.printStackTrace();
+	    }    
+	}
+	  
+	private void appendToPaneSend(JTextPane tp, String msg){
+		    HTMLDocument doc = (HTMLDocument)tp.getDocument();
+		    HTMLEditorKit editorKit = (HTMLEditorKit)tp.getEditorKit();
+		    try {
+		    	editorKit.insertHTML(doc, doc.getLength(), msg, 0, 0, null);
+		    	tp.setCaretPosition(doc.getLength());
+		      
+		    }
+		    catch(Exception e) {
+		    	e.printStackTrace();
+		    }	    
+	}
 }
