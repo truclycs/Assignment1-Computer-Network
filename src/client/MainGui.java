@@ -4,6 +4,9 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
+
+import data.User;
+
 import javax.swing.JLabel;
 
 import javax.swing.DefaultListModel;
@@ -18,6 +21,7 @@ import java.awt.Color;
 import javax.swing.JList;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class MainGui {
 
@@ -26,10 +30,11 @@ public class MainGui {
 	private static int portClient = 0;
 	private JFrame frameMainGui;
 	private JTextField txtNameFriend;
-	private JButton btnChat, btnExit;
+	private JButton btnChat, btnExit, btnChatRoom, btnAdd;
 	private JLabel lblLogo;
 	private JLabel lblActiveNow;
 	private static JList<String> listActive;
+	private static ArrayList<User> clients = new ArrayList<User>();
 	
 	static DefaultListModel<String> model = new DefaultListModel<>();
 	private JLabel lblUsername;
@@ -136,6 +141,82 @@ public class MainGui {
 		btnChat.setBounds(20, 465, 129, 44);
 		frameMainGui.getContentPane().add(btnChat);
 		btnChat.setIcon(new javax.swing.ImageIcon(MainGui.class.getResource("/image/chat.png")));
+		
+		// update 1/11/2019
+		//
+		///
+		///
+		btnAdd = new JButton("Add");
+		btnAdd.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		
+		btnAdd.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+				String name = txtNameFriend.getText();
+				if (name.equals("") || Client.clientarray == null) {
+					Tags.show(frameMainGui, "Invaild username", false);
+					return;
+				}
+				if (name.equals(nameUser)) {
+					Tags.show(frameMainGui, "This software doesn't support chat yourself function", false);
+					return;
+				}
+				int size = Client.clientarray.size();
+				
+				for (int i = 0; i < size; i++) {
+					if (name.equals(Client.clientarray.get(i).getName())) {
+						try {
+							User newPeer = new User();
+							newPeer.setPeer(name, Client.clientarray.get(i).getHost(),Client.clientarray.get(i).getPort());
+							clients.add(newPeer);
+							return;
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				Tags.show(frameMainGui, "Friend is not found. Please wait to update your list friend", false);
+			}
+		});
+		
+		btnAdd.setBounds(295, 465, 50, 44);
+		frameMainGui.getContentPane().add(btnAdd);
+		btnAdd.setIcon(new javax.swing.ImageIcon(MainGui.class.getResource("/image/chat.png")));
+		
+		btnChatRoom = new JButton("ChatRoom");
+		btnChatRoom.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+
+		btnChatRoom.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+				String name = txtNameFriend.getText();
+				if (name.equals("") || Client.clientarray == null) {
+					Tags.show(frameMainGui, "Invaild username", false);
+					return;
+				}
+				if (name.equals(nameUser)) {
+					Tags.show(frameMainGui, "This software doesn't support chat yourself function", false);
+					return;
+				}
+				User newPeer = new User();
+				newPeer.setPeer(nameUser, IPClient, portClient);
+				clients.add(newPeer);
+				try {
+					clientNode.intialNewChatRoom(clients);
+					clients = new ArrayList<User>();
+					return;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				Tags.show(frameMainGui, "Friend is not found. Please wait to update your list friend", false);
+			}
+		});
+		btnChatRoom.setBounds(160, 465, 129, 44);
+		frameMainGui.getContentPane().add(btnChatRoom);
+		btnChatRoom.setIcon(new javax.swing.ImageIcon(MainGui.class.getResource("/image/chat.png")));
+		
+		
+		
 		btnExit = new JButton("Exit");
 		btnExit.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		btnExit.addActionListener(new ActionListener() {

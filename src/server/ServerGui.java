@@ -39,6 +39,7 @@ public class ServerGui {
 				try {
 					ServerGui window = new ServerGui();
 					window.frmServerMangement.setVisible(true);
+					window.frmServerMangement.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -152,9 +153,9 @@ public class ServerGui {
 
 		
 		JLabel lbl_group = new JLabel("Server Management");
-		lbl_group.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lbl_group.setBounds(169, 13, 268, 76);
-		lbl_group.setIcon(new javax.swing.ImageIcon(ServerGui.class.getResource("/image/servermanager64x64.png")));
+		lbl_group.setFont(new Font("Segoe UI", Font.PLAIN, 26));
+		lbl_group.setBounds(169, 13, 408, 76);
+		lbl_group.setIcon(new javax.swing.ImageIcon(ServerGui.class.getResource("/image/group.png")));
 		frmServerMangement.getContentPane().add(lbl_group);
 
 		txtMessage = new TextArea();					

@@ -99,6 +99,49 @@ public class Client {
 		}
 		new ChatGui(username, guest, connclient, port_client);
 	}
+	
+	// update 1/11/19
+	public void intialNewChatRoom(ArrayList<User> clients) throws Exception {
+		
+//		int size = Client.clientarray.size();
+//		for (int i = 0; i < size; i++) {
+//			if (name.equals(Client.clientarray.get(i).getName())) {
+//				try {
+//					clientNode.intialNewChat(Client.clientarray.get(i).getHost(),Client.clientarray.get(i).getPort(), name);
+//					return;
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+		
+		int size = clients.size();
+		ArrayList<String> nameGuest = new ArrayList<String>();
+		for (int i = 0; i < size; i++) {
+			nameGuest.add(clients.get(i).getName());
+		}
+		new ChatServer(nameGuest, IPserver);
+		for (int i = 0; i < size; i++) {
+			ChatGroupClients.main(clients.get(i).getName(), IPserver);
+//			ChatRoomGUI.main(clients.get(i).getName(), IPserver);
+		}
+		
+//		int size = clients.size();
+//		ArrayList<String> nameGuest = new ArrayList<String>();
+//		ArrayList<Socket> listSocket = new ArrayList<Socket>();
+//		final Socket connclient = new Socket(InetAddress.getByName(IP), host);
+//		ObjectOutputStream send_request = new ObjectOutputStream(connclient.getOutputStream());
+//		send_request.writeObject(Encode.sendRequestChat(username));
+//		send_request.flush();
+//		ObjectInputStream recieved = new ObjectInputStream(connclient.getInputStream());
+//		String mess = (String) recieved.readObject();
+//		if (mess.equals(Tags.CHAT_DENY_TAG)) {
+//			MainGui.request("Your friend denied connect with you!", false);
+//			connclient.close();
+//			return;
+//		}
+//		new ChatGui(username, guest, connclient, port_client);
+	}
 
 	public void exit() throws IOException, ClassNotFoundException {
 		stop = true;

@@ -95,14 +95,14 @@ public class ChatGui {
 	}
 
 	public void updateChat_receive(String msg) {
-		appendToPane(txtDisplayChat, "<div class='left' style='width: 40%; background-color: #f1f0f0; border-radius:60px;'>"+ msg +"</div>");
+		appendToPane(txtDisplayChat, "<div class='left' style='width: 40%; background-color: #f1f0f0; '>"+ msg +"</div>");
 	}
 
 	public void updateChat_send(String msg) {
 		appendToPaneSend(txtDisplayChat, "<table class='bang' style='color: white; clear:both; width: 100%;'>"
 				+ "<tr align='right'>"
-				+ "<td style='width: 59%; '></td>"
-				+ "<td style='width: 40%; background-color: #0084ff; border-radius:60px;'>" + msg
+				+ "<td style='width: 59%;'></td>"
+				+ "<td style='width: 40%;  background-color: #0084ff; '>" + msg
 				+"</td> </tr>"
 				+ "</table>");
 	}
@@ -147,11 +147,12 @@ public class ChatGui {
 			fileTemp.mkdirs();
 		}
 		frameChatGui = new JFrame();
-		frameChatGui.setTitle("Private Chat");
+		frameChatGui.setTitle("Welcome: " + nameUser);
 		frameChatGui.setResizable(false);
 		frameChatGui.setBounds(200, 200, 673, 645);
 		frameChatGui.getContentPane().setLayout(null);
 		frameChatGui.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frameChatGui.setLocationRelativeTo(null);
 
 		JLabel lblClientIP = new JLabel("");
 		lblClientIP.setFont(new Font("Segoe UI", Font.PLAIN, 13));
@@ -291,9 +292,11 @@ public class ChatGui {
 				if (msg.equals(""))
 					return;
 				try {
-					chat.sendMessage(Encode.sendMessage(msg));
 					updateChat_send(msg);
 					txtMessage.setText("");
+					msg = nameUser + ": " + msg;
+					System.out.println(msg);
+					chat.sendMessage(Encode.sendMessage(msg));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -327,10 +330,11 @@ public class ChatGui {
 						return;
 					}
 					try {
-						chat.sendMessage(Encode.sendMessage(msg));
 						updateChat_send(msg);
 						txtMessage.setText("");
 						txtMessage.setCaretPosition(0);
+						msg = nameUser + ": " + msg;
+						chat.sendMessage(Encode.sendMessage(msg));
 					} catch (Exception e) {
 						txtMessage.setText("");
 						txtMessage.setCaretPosition(0);
@@ -681,7 +685,6 @@ public class ChatGui {
 	    HTMLDocument doc = (HTMLDocument)tp.getDocument();
 	    HTMLEditorKit editorKit = (HTMLEditorKit)tp.getEditorKit();
 	    try {
-	    	System.out.print(msg);
 		    tp.insertIcon(new javax.swing.ImageIcon(ChatGui.class.getResource(srcImgGuest)));
 	    	editorKit.insertHTML(doc, doc.getLength(), msg, 0, 0, null);
 	    	tp.setCaretPosition(doc.getLength());
