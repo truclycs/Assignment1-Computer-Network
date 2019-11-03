@@ -15,16 +15,14 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import tags.Tags;
-
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 
 
-public class ChatRoomGUI extends JFrame {
-	Socket socketChat;
+public class ChatRoomGUI extends JFrame implements ActionListener {
+	
 	String nameUser = "", nameFile = "", srcImgGuest;
 	ArrayList<String> nameGuest = new ArrayList<String>();
 	String strGuest = "";
@@ -42,20 +40,43 @@ public class ChatRoomGUI extends JFrame {
     PrintWriter pw;
     BufferedReader br;
     InetAddress servername;
-    
-    public ChatRoomGUI(String nameUser,InetAddress serverName, ArrayList<String> guest) throws Exception {
+    public static void main(String[] args) {
+    	System.out.print("Nam Khung");
+        try {
+//            new ChatGroupClients(Username, ipserver);
+        	ArrayList<String> guest = new ArrayList<String>();
+        	guest.add("123");
+        	System.out.print(guest.get(0));
+        	String sn = "localhost";
+        	new ChatRoomGUI("Hmmm", sn, guest);
+        } catch(Exception ex) {
+            out.println( "Error --> " + ex.getMessage());
+        }
+        
+    } // end of main
+    Socket socketChat;
+    public ChatRoomGUI(String nameUser,String serverName, ArrayList<String> guest) throws Exception {
         super(nameUser);
         this.nameUser = nameUser;
-        this.socketChat  = new Socket(serverName, 9985);
+        
+        
+        
         this.nameGuest = guest;
-        this.servername = serverName;
+        this.servername = InetAddress.getByName("localhost");
 		for (int i = 0; i < guest.size() - 1; i++) {
 			strGuest = strGuest + guest.get(i) + ", ";
 		}
 		strGuest = strGuest + guest.get(guest.size() - 1);
+		try {
+        	socketChat  = new Socket(servername, 9988);
+        }catch(Exception ex) {
+            out.println( "ErrorChatRoomGUI --> " + ex.getMessage());
+            ex.printStackTrace();
+        }
         br = new BufferedReader( new InputStreamReader( socketChat.getInputStream()) ) ;
         pw = new PrintWriter(socketChat.getOutputStream(),true);
         pw.println(nameUser);  // send name to server
+        System.out.println("hello");
         buildInterface();
         frameChatRoomGUI.setVisible(true);
         new MessagesThread().start();
@@ -104,7 +125,7 @@ public class ChatRoomGUI extends JFrame {
 		btnSend.setBorder(new EmptyBorder(0, 0, 0, 0));
 		btnSend.setContentAreaFilled(false);
 		panelMessage.add(btnSend);
-		btnSend.setIcon(new javax.swing.ImageIcon(ChatGui.class.getResource("/image/send.png")));
+		btnSend.setIcon(new javax.swing.ImageIcon(ChatRoomGUI.class.getResource("/chat/send.png")));
 			
 				
 		Label label = new Label("Path");
@@ -126,6 +147,7 @@ public class ChatRoomGUI extends JFrame {
 					msg = nameUser + ": " + msg;
 					sendMessage(msg);
 				} catch (Exception e) {
+			        System.out.println("hello141");
 					e.printStackTrace();
 				}
 			}
@@ -175,23 +197,24 @@ public class ChatRoomGUI extends JFrame {
 		btnDisConnect.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		btnDisConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int result = Tags.show(frameChatRoomGUI, "Are you sure to close chat with account: "
-						+ nameGuest, true);
-				if (result == 0) {
+//				int result = Tags.show(frameChatRoomGUI, "Are you sure to close chat with account: "
+//						+ nameGuest, true);
+//				if (result == 0) {
 					try {
 						isStop = true;
-						frameChatRoomGUI.dispose();
 						pw.println("end");  // send end to server so that server knows about the termination
-			            System.exit(0);
-						System.gc();
+						frameChatRoomGUI.dispose();
+			            System.exit(1);
+//						System.gc();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-				}
+//				}
 			}
 		});
 		
 		btnDisConnect.setBounds(540, 6, 113, 40);
+		btnDisConnect.addActionListener(this);
 		frameChatRoomGUI.getContentPane().add(btnDisConnect);
 		textState = new Label("");
 		textState.setBounds(6, 570, 158, 22);
@@ -220,6 +243,8 @@ public class ChatRoomGUI extends JFrame {
 		
 		
     }
+    
+    
     
     public void sendMessage(String msg) {
     	pw.println(msg);
@@ -261,28 +286,34 @@ public class ChatRoomGUI extends JFrame {
 	    }    
 	}
     
-//    public static void main(String nameUser,InetAddress serverName) {
-//        try {
-////            new ChatGroupClients(Username, ipserver);
-//        	ArrayList<String> guest = new ArrayList<String>();
-//        	guest.add("123");
-//        	new ChatRoomGUI(nameUser, serverName, guest);
-//        } catch(Exception ex) {
-//            out.println( "Error --> " + ex.getMessage());
-//        }
-//        
-//    } // end of main
+    
     
     // inner class for Messages Thread
     class  MessagesThread extends Thread {
         public void run() {
-            String line;
+            String line = "";
             try {
                 while(true) {
                     line = br.readLine();
                     updateChat_receive(line + "\n");
                 } // end of while
-            } catch(Exception ex) {}
+            } catch(Exception ex) {
+            	ex.printStackTrace();
+            }
         }
     }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+//		pw.println(txtMessage.getText());
+		if ( e.getSource() == btnDisConnect ) {
+            pw.println("end");  // send end to server so that server knows about the termination
+            System.exit(0);
+        } else {
+            // send message to server
+            pw.println(txtMessage.getText());
+        }
+	}
+	
 }

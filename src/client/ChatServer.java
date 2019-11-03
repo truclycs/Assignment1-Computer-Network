@@ -27,7 +27,7 @@ public class  ChatServer {
 	
 	
 	public void process() throws Exception  {
-		 ServerSocket server = new ServerSocket(9960, 10, IPserver);
+		 ServerSocket server = new ServerSocket(9950, 10, IPserver);
 		 out.println("Server Started...");
 		 while( true) {
 				 Socket client = server.accept();
