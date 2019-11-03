@@ -9,8 +9,6 @@ import java.awt.*;
 import java.awt.event.*;
 import static java.lang.System.out;
 import java.awt.*;
-
-import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -18,6 +16,8 @@ import java.util.ArrayList;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
+
+import tags.Encode;
 
 
 
@@ -36,39 +36,38 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
 	JProgressBar progressSendFile;
 	JTextField txtMessage;
 	JScrollPane scrollPane;
+	private JTextField txtPath;
 	
     PrintWriter pw;
     BufferedReader br;
-    InetAddress servername;
-    public static void main(String[] args) {
+    public static void main(String nameUser,InetAddress serverName, ArrayList<String> nameGuest) {
     	System.out.print("Nam Khung");
         try {
 //            new ChatGroupClients(Username, ipserver);
-        	ArrayList<String> guest = new ArrayList<String>();
-        	guest.add("123");
-        	System.out.print(guest.get(0));
+        	
         	String sn = "localhost";
-        	new ChatRoomGUI("Hmmm", sn, guest);
+        	out.println(nameUser);
+        	new ChatRoomGUI(nameUser, serverName, nameGuest);
         } catch(Exception ex) {
             out.println( "Error --> " + ex.getMessage());
         }
         
     } // end of main
     Socket socketChat;
-    public ChatRoomGUI(String nameUser,String serverName, ArrayList<String> guest) throws Exception {
+    public ChatRoomGUI(String nameUser,InetAddress serverName, ArrayList<String> guest) throws Exception {
         super(nameUser);
         this.nameUser = nameUser;
         
         
         
         this.nameGuest = guest;
-        this.servername = InetAddress.getByName("localhost");
 		for (int i = 0; i < guest.size() - 1; i++) {
-			strGuest = strGuest + guest.get(i) + ", ";
+			if(!guest.get(i).equals(nameUser))
+				strGuest = strGuest + guest.get(i) + ", ";
 		}
 		strGuest = strGuest + guest.get(guest.size() - 1);
 		try {
-        	socketChat  = new Socket(servername, 9988);
+        	socketChat  = new Socket(serverName, 10007);
         }catch(Exception ex) {
             out.println( "ErrorChatRoomGUI --> " + ex.getMessage());
             ex.printStackTrace();
@@ -92,6 +91,8 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
     	frameChatRoomGUI.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     	frameChatRoomGUI.setLocationRelativeTo(null);
     	
+    	out.println("interface");
+    	
     	JLabel lblClientIP =  new JLabel("");
     	lblClientIP.setFont(new Font("Segoe UI", Font.PLAIN, 13));
     	lblClientIP.setBounds(30, 6, 41, 40);
@@ -102,7 +103,7 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
 		textName.setForeground(Color.RED);
 		textName.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		textName.setEditable(false);
-		textName.setBounds(70, 6, 148, 40);
+		textName.setBounds(70, 6, 448, 40);
 		frameChatRoomGUI.getContentPane().add(textName);
 		textName.setText(strGuest);
 		textName.setColumns(10);
@@ -118,6 +119,7 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
 		panelMessage.add(txtMessage);
 		txtMessage.setColumns(10);
 		
+		out.println("end  - 1 - interface");
 		
 		btnSend = new JButton("");
 		btnSend.setFont(new Font("Segoe UI", Font.PLAIN, 13));
@@ -125,8 +127,42 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
 		btnSend.setBorder(new EmptyBorder(0, 0, 0, 0));
 		btnSend.setContentAreaFilled(false);
 		panelMessage.add(btnSend);
-		btnSend.setIcon(new javax.swing.ImageIcon(ChatRoomGUI.class.getResource("/chat/send.png")));
+		btnSend.setIcon(new javax.swing.ImageIcon(ChatRoomGUI.class.getResource("/image/send.png")));
 			
+		out.println("end  - 1.1 - interface");
+		
+		
+		btnChoose = new JButton("");
+		btnChoose.setBounds(551, 152, 50, 36);
+		panelMessage.add(btnChoose);
+		btnChoose.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		btnChoose.setIcon(new javax.swing.ImageIcon(ChatGui.class.getResource("/image/attachment.png")));
+		btnChoose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(System
+						.getProperty("user.home")));
+				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				int result = fileChooser.showOpenDialog(frameChatRoomGUI);
+				if (result == JFileChooser.APPROVE_OPTION) {
+					isSendFile = true;
+					String path_send = (fileChooser.getSelectedFile()
+							.getAbsolutePath()) ;
+					System.out.println(path_send);
+					nameFile = fileChooser.getSelectedFile().getName();
+					txtPath.setText(path_send);
+				}
+			}
+		});
+		btnChoose.setBorder(BorderFactory.createEmptyBorder());
+		btnChoose.setContentAreaFilled(false);
+		
+		txtPath = new JTextField("");
+		txtPath.setBounds(76, 163, 433, 25);
+		panelMessage.add(txtPath);
+		txtPath.setEditable(false);
+		txtPath.setColumns(10);
+				
 				
 		Label label = new Label("Path");
 		label.setBounds(10, 166, 39, 22);
@@ -134,17 +170,24 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
 		label.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		
 		
+		
+		
+		out.println("end  - 1.2 - interface");
+		
 		//action when press button Send
 		btnSend.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
+				if(isSendFile) {
+					sendMessage(nameFile);
+					updateChat_notify("sendfile complete");
+				}
 				String msg = txtMessage.getText();
 				if (msg.equals(""))
 					return;
 				try {
 					updateChat_send(msg);
 					txtMessage.setText("");
-					msg = nameUser + ": " + msg;
 					sendMessage(msg);
 				} catch (Exception e) {
 			        System.out.println("hello141");
@@ -152,6 +195,8 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
 				}
 			}
 		});
+		
+		out.println("end  - 2 - interface");
 
 		txtMessage.addKeyListener(new KeyListener() {
 
@@ -183,7 +228,6 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
 						updateChat_send(msg);
 						txtMessage.setText("");
 						txtMessage.setCaretPosition(0);
-						msg = nameUser + ": " + msg;
 						sendMessage(msg);
 					} catch (Exception e) {
 						txtMessage.setText("");
@@ -197,21 +241,19 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
 		btnDisConnect.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		btnDisConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-//				int result = Tags.show(frameChatRoomGUI, "Are you sure to close chat with account: "
-//						+ nameGuest, true);
-//				if (result == 0) {
-					try {
-						isStop = true;
-						pw.println("end");  // send end to server so that server knows about the termination
-						frameChatRoomGUI.dispose();
-			            System.exit(1);
-//						System.gc();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-//				}
+				try {
+					isStop = true;
+					pw.println("end");  // send end to server so that server knows about the termination
+					frameChatRoomGUI.dispose();
+					System.exit(1);
+//					System.gc();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
+		
+		out.println("end  - 3 - interface");
 		
 		btnDisConnect.setBounds(540, 6, 113, 40);
 		btnDisConnect.addActionListener(this);
@@ -241,7 +283,7 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
 		scrollPane.setBounds(6, 59, 649, 291);
 		frameChatRoomGUI.getContentPane().add(scrollPane);
 		
-		
+		out.println("end - - interface");
     }
     
     

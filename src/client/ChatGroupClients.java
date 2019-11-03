@@ -20,7 +20,7 @@ public class  ChatGroupClients extends JFrame implements ActionListener {
     public ChatGroupClients(String uname,InetAddress servername) throws Exception {
         super(uname);  // set title for frame
         this.uname = uname;
-        client  = new Socket(servername,9998);
+        client  = new Socket(servername,10006);
         br = new BufferedReader( new InputStreamReader( client.getInputStream()) ) ;
         pw = new PrintWriter(client.getOutputStream(),true);
         pw.println(uname);  // send name to server
@@ -58,6 +58,11 @@ public class  ChatGroupClients extends JFrame implements ActionListener {
         } else {
             // send message to server
             pw.println(tfInput.getText());
+            taMessages.setAlignmentX(RIGHT_ALIGNMENT);
+            taMessages.append("[me]: " + tfInput.getText() + "\n");
+            taMessages.setAlignmentX(LEFT_ALIGNMENT);
+            tfInput.setText("");
+            
         }
     }
     

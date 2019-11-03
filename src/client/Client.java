@@ -123,7 +123,7 @@ public class Client {
 		new ChatServer(nameGuest, IPserver);
 		for (int i = 0; i < size; i++) {
 //			ChatGroupClients.main(clients.get(i).getName(), IPserver);
-			ChatRoomGUI.main(clients.get(i).getName(), IPserver);
+			ChatRoomGUI.main(clients.get(i).getName(), IPserver, nameGuest);
 		}
 		
 //		int size = clients.size();
