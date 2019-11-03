@@ -149,7 +149,7 @@ public class ChatGui {
 		frameChatGui = new JFrame();
 		frameChatGui.setTitle("Welcome: " + nameUser);
 		frameChatGui.setResizable(false);
-		frameChatGui.setBounds(200, 200, 673, 645);
+		frameChatGui.setBounds(200, 200, 673, 545);
 		frameChatGui.getContentPane().setLayout(null);
 		frameChatGui.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frameChatGui.setLocationRelativeTo(null);
@@ -192,7 +192,7 @@ public class ChatGui {
 		textName.setColumns(10);
 
 		panelMessage = new JPanel();
-		panelMessage.setBounds(6, 363, 649, 201);
+		panelMessage.setBounds(6, 363, 649, 135);
 		panelMessage.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Message"));
 		frameChatGui.getContentPane().add(panelMessage);
 		panelMessage.setLayout(null);
@@ -211,7 +211,7 @@ public class ChatGui {
 		btnSend.setIcon(new javax.swing.ImageIcon(ChatGui.class.getResource("/image/send.png")));
 		
 		btnChoose = new JButton("");
-		btnChoose.setBounds(551, 152, 50, 36);
+		btnChoose.setBounds(551, 92, 50, 36);
 		panelMessage.add(btnChoose);
 		btnChoose.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		btnChoose.setIcon(new javax.swing.ImageIcon(ChatGui.class.getResource("/image/attachment.png")));
@@ -236,14 +236,14 @@ public class ChatGui {
 		btnChoose.setContentAreaFilled(false);
 		
 		txtPath = new JTextField("");
-		txtPath.setBounds(76, 163, 433, 25);
+		txtPath.setBounds(76, 103, 433, 25);
 		panelMessage.add(txtPath);
 		txtPath.setEditable(false);
 		txtPath.setColumns(10);
 				
 				
 		Label label = new Label("Path");
-		label.setBounds(10, 166, 39, 22);
+		label.setBounds(10, 106, 39, 22);
 		panelMessage.add(label);
 		label.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		

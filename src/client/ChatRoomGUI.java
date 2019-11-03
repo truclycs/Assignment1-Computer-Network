@@ -61,11 +61,20 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
         
         
         this.nameGuest = guest;
-		for (int i = 0; i < guest.size() - 1; i++) {
-			if(!guest.get(i).equals(nameUser))
-				strGuest = strGuest + guest.get(i) + ", ";
+        if(!guest.get(0).equals(nameUser)) {
+			strGuest = strGuest + guest.get(0);
 		}
-		strGuest = strGuest + guest.get(guest.size() - 1);
+		for (int i = 1; i < guest.size(); i++) {
+			if(!guest.get(i).equals(nameUser)) {
+				if(strGuest.equals("")) {
+					strGuest = strGuest + guest.get(i);
+				}
+				else {
+					strGuest = strGuest + ", " + guest.get(i);
+				}
+			}
+		}
+		
 		try {
         	socketChat  = new Socket(serverName, 10007);
         }catch(Exception ex) {
@@ -86,7 +95,7 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
     	frameChatRoomGUI = new JFrame();
     	frameChatRoomGUI.setTitle("Welcome: " + nameUser);
     	frameChatRoomGUI.setResizable(false);
-    	frameChatRoomGUI.setBounds(200, 200, 673, 645);
+    	frameChatRoomGUI.setBounds(200, 200, 673, 545);
     	frameChatRoomGUI.getContentPane().setLayout(null);
     	frameChatRoomGUI.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     	frameChatRoomGUI.setLocationRelativeTo(null);
@@ -96,7 +105,7 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
     	JLabel lblClientIP =  new JLabel("");
     	lblClientIP.setFont(new Font("Segoe UI", Font.PLAIN, 13));
     	lblClientIP.setBounds(30, 6, 41, 40);
-//    	lblClientIP.setIcon(new javax.swing.ImageIcon(ChatGui.class.getResource("/image/girl.png")));
+    	lblClientIP.setIcon(new javax.swing.ImageIcon(ChatGui.class.getResource("/image/teamwork.png")));
     	frameChatRoomGUI.getContentPane().add(lblClientIP);
     	
     	textName = new JTextField(nameUser);
@@ -109,7 +118,7 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
 		textName.setColumns(10);
 		
 		panelMessage = new JPanel();
-		panelMessage.setBounds(6, 363, 649, 201);
+		panelMessage.setBounds(6, 363, 649, 135);
 		panelMessage.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Message"));
 		frameChatRoomGUI.getContentPane().add(panelMessage);
 		panelMessage.setLayout(null);
@@ -133,7 +142,7 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
 		
 		
 		btnChoose = new JButton("");
-		btnChoose.setBounds(551, 152, 50, 36);
+		btnChoose.setBounds(551, 92, 50, 36);
 		panelMessage.add(btnChoose);
 		btnChoose.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		btnChoose.setIcon(new javax.swing.ImageIcon(ChatGui.class.getResource("/image/attachment.png")));
@@ -158,14 +167,14 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
 		btnChoose.setContentAreaFilled(false);
 		
 		txtPath = new JTextField("");
-		txtPath.setBounds(76, 163, 433, 25);
+		txtPath.setBounds(76, 103, 433, 25);
 		panelMessage.add(txtPath);
 		txtPath.setEditable(false);
 		txtPath.setColumns(10);
 				
 				
 		Label label = new Label("Path");
-		label.setBounds(10, 166, 39, 22);
+		label.setBounds(10, 106, 39, 22);
 		panelMessage.add(label);
 		label.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		
@@ -181,6 +190,7 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
 				if(isSendFile) {
 					sendMessage(nameFile);
 					updateChat_notify("sendfile complete");
+					txtPath.setText("");
 				}
 				String msg = txtMessage.getText();
 				if (msg.equals(""))
@@ -243,10 +253,12 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					isStop = true;
+					sendMessage("BYE BYE. LEAVE CHAT!!!");
 					pw.println("end");  // send end to server so that server knows about the termination
 					frameChatRoomGUI.dispose();
-					System.exit(1);
-//					System.gc();
+//					System.exit(1);
+					socketChat.close();
+					System.gc();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -350,8 +362,9 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 //		pw.println(txtMessage.getText());
 		if ( e.getSource() == btnDisConnect ) {
+			sendMessage("BYE BYE. LEAVE CHAT!!!");
             pw.println("end");  // send end to server so that server knows about the termination
-            System.exit(0);
+//            System.exit(0);
         } else {
             // send message to server
             pw.println(txtMessage.getText());
