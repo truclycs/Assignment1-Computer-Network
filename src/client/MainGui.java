@@ -19,6 +19,11 @@ import java.awt.Font;
 
 import java.awt.Color;
 import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -26,15 +31,16 @@ import java.util.ArrayList;
 public class MainGui {
 
 	private Client clientNode;
-	private static String IPClient = "", nameUser = "", dataUser = "";
+	private static String IPClient = "", nameUser = "", dataUser = "", nameGroup = "";
 	private static int portClient = 0;
 	private JFrame frameMainGui;
-	private JTextField txtNameFriend;
-	private JButton btnChat, btnExit, btnChatRoom, btnAdd;
+	private JTextField txtNameFriend, txtNameGroup;
+	private JButton btnChat, btnExit, btnChatRoom, btnAdd, btnClear;
 	private JLabel lblLogo;
 	private JLabel lblActiveNow;
 	private static JList<String> listActive;
 	private static ArrayList<User> clients = new ArrayList<User>();
+	private ArrayList<String> nameMember = new ArrayList<String>();
 	
 	static DefaultListModel<String> model = new DefaultListModel<>();
 	private JLabel lblUsername;
@@ -87,10 +93,36 @@ public class MainGui {
 		frameMainGui = new JFrame();
 		frameMainGui.setTitle("Menu Chat");
 		frameMainGui.setResizable(false);
-		frameMainGui.setBounds(100, 100, 500, 560);
+		frameMainGui.setBounds(100, 100, 560, 635);
 //		frameMainGui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameMainGui.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frameMainGui.getContentPane().setLayout(null);
+		
+		JMenuBar menuBar = new JMenuBar();
+		frameMainGui.setJMenuBar(menuBar);
+		
+		JMenu mnNewMenu = new JMenu("About");
+		menuBar.add(mnNewMenu);
+		
+		JMenuItem mntmMe = new JMenuItem("Us");
+		mnNewMenu.add(mntmMe);
+		mntmMe.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JOptionPane.showMessageDialog(mntmMe, "Nguyen Dang Ha Nam: 1710195\nNguyen Thi Truc Ly:      1710187\nTran Ho Minh Thong:     1710314", "About Us", 1);
+			}
+		});
+		
+		JMenuItem mntmVersion = new JMenuItem("Version");
+		mnNewMenu.add(mntmVersion);
+		mntmVersion.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JOptionPane.showMessageDialog(mntmMe, "version 1.1 update 4/11/2019", "Version", 1);
+				}
+		});
 		
 		JLabel lblHello = new JLabel("Welcome");
 		lblHello.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -103,10 +135,22 @@ public class MainGui {
 		lblFriendsName.setBounds(12, 425, 110, 16);
 		frameMainGui.getContentPane().add(lblFriendsName);
 		
+		JLabel lblGroupName = new JLabel("Group Member: ");
+		lblGroupName.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		lblGroupName.setBounds(12, 460, 110, 16);
+		frameMainGui.getContentPane().add(lblGroupName);
+		
+		txtNameGroup = new JTextField("");
+		txtNameGroup.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		txtNameGroup.setColumns(10);
+		txtNameGroup.setBounds(115, 455, 380, 28);
+		txtNameGroup.setEditable(false);
+		frameMainGui.getContentPane().add(txtNameGroup);
+		
 		txtNameFriend = new JTextField("");
 		txtNameFriend.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		txtNameFriend.setColumns(10);
-		txtNameFriend.setBounds(100, 419, 384, 28);
+		txtNameFriend.setBounds(115, 419, 416, 28);
 		frameMainGui.getContentPane().add(txtNameFriend);
 
 		btnChat = new JButton("Chat");
@@ -138,10 +182,28 @@ public class MainGui {
 				Tags.show(frameMainGui, "Friend is not found. Please wait to update your list friend", false);
 			}
 		});
-		btnChat.setBounds(20, 465, 129, 44);
+		btnChat.setBounds(20, 505, 129, 44);
 		frameMainGui.getContentPane().add(btnChat);
-		btnChat.setIcon(new javax.swing.ImageIcon(MainGui.class.getResource("/image/chat.png")));
+		btnChat.setIcon(new javax.swing.ImageIcon(MainGui.class.getResource("/image/chatting.png")));
 		
+		
+		btnClear = new JButton();
+		btnClear.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		btnClear.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+				clients.clear();
+				nameMember.clear();
+				nameGroup = "";
+				txtNameGroup.setText(nameGroup);
+				return;
+			}
+		});
+		
+		btnClear.setBounds(500, 455, 30, 28);
+		frameMainGui.getContentPane().add(btnClear);
+		btnClear.setIcon(new javax.swing.ImageIcon(MainGui.class.getResource("/image/remove.png")));
+
 		// update 1/11/2019
 		//
 		///
@@ -162,13 +224,18 @@ public class MainGui {
 					return;
 				}
 				int size = Client.clientarray.size();
-				
 				for (int i = 0; i < size; i++) {
 					if (name.equals(Client.clientarray.get(i).getName())) {
 						try {
-							User newPeer = new User();
-							newPeer.setPeer(name, Client.clientarray.get(i).getHost(),Client.clientarray.get(i).getPort());
-							clients.add(newPeer);
+							if(!nameMember.contains(name)) {
+								nameMember.add(name);
+								User newPeer = new User();
+								newPeer.setPeer(name, Client.clientarray.get(i).getHost(),Client.clientarray.get(i).getPort());
+								clients.add(newPeer);
+								nameGroup = nameGroup + " " + name;
+								txtNameGroup.setText(nameGroup);
+							}
+							
 							return;
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -179,19 +246,19 @@ public class MainGui {
 			}
 		});
 		
-		btnAdd.setBounds(295, 465, 50, 44);
+		btnAdd.setBounds(305, 505, 80, 44);
 		frameMainGui.getContentPane().add(btnAdd);
-		btnAdd.setIcon(new javax.swing.ImageIcon(MainGui.class.getResource("/image/chat.png")));
+		btnAdd.setIcon(new javax.swing.ImageIcon(MainGui.class.getResource("/image/adduser.png")));
 		
-		btnChatRoom = new JButton("ChatRoom");
+		btnChatRoom = new JButton("Group");
 		btnChatRoom.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 
 		btnChatRoom.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				String name = txtNameFriend.getText();
+				String name = txtNameGroup.getText();
 				if (name.equals("") || Client.clientarray == null) {
-					Tags.show(frameMainGui, "Invaild username", false);
+					Tags.show(frameMainGui, "Group invaild username", false);
 					return;
 				}
 				if (name.equals(nameUser)) {
@@ -204,6 +271,9 @@ public class MainGui {
 				try {
 					clientNode.intialNewChatRoom(clients);
 					clients = new ArrayList<User>();
+					nameGroup = "";
+					txtNameGroup.setText(nameGroup);
+					nameMember.clear();
 					return;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -211,9 +281,9 @@ public class MainGui {
 				Tags.show(frameMainGui, "Friend is not found. Please wait to update your list friend", false);
 			}
 		});
-		btnChatRoom.setBounds(160, 465, 129, 44);
+		btnChatRoom.setBounds(160, 505, 129, 44);
 		frameMainGui.getContentPane().add(btnChatRoom);
-		btnChatRoom.setIcon(new javax.swing.ImageIcon(MainGui.class.getResource("/image/chat.png")));
+		btnChatRoom.setIcon(new javax.swing.ImageIcon(MainGui.class.getResource("/image/teamwork.png")));
 		
 		
 		
@@ -232,15 +302,15 @@ public class MainGui {
 				}
 			}
 		});
-		btnExit.setBounds(353, 465, 129, 44);
+		btnExit.setBounds(403, 505, 129, 44);
 		btnExit.setIcon(new javax.swing.ImageIcon(MainGui.class.getResource("/image/stop.png")));
 		frameMainGui.getContentPane().add(btnExit);
 		
-		lblLogo = new JLabel("CONNECT WITH EVERYONE IN THE WORLD");
+		lblLogo = new JLabel("CHAT APPLICATION");
 		lblLogo.setForeground(new Color(0, 0, 205));
-		lblLogo.setIcon(new javax.swing.ImageIcon(MainGui.class.getResource("/image/connect.png")));
+		lblLogo.setIcon(new javax.swing.ImageIcon(MainGui.class.getResource("/image/customer.png")));
 		lblLogo.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblLogo.setBounds(51, 13, 413, 38);
+		lblLogo.setBounds(175, 13, 413, 60);
 		frameMainGui.getContentPane().add(lblLogo);
 		
 		lblActiveNow = new JLabel("List Account Active Now");
@@ -258,7 +328,7 @@ public class MainGui {
 				txtNameFriend.setText(value);
 			}
 		});
-		listActive.setBounds(12, 152, 472, 251);
+		listActive.setBounds(12, 152, 518, 251);
 		frameMainGui.getContentPane().add(listActive);
 		
 		lblUsername = new JLabel(nameUser);

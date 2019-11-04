@@ -9,9 +9,11 @@ public class  ChatServer {
 	private ArrayList<String> users = new ArrayList<String>();
 	private ArrayList<HandleClient> clients = new ArrayList<HandleClient>();
 	private InetAddress IPserver;
-	public ChatServer(ArrayList<String> Users, InetAddress _IPserver){
+	private int port = 10007;
+	public ChatServer(ArrayList<String> Users, InetAddress _IPserver, int port_server){
 		users = Users;
 		IPserver = _IPserver;
+		port = port_server;
 		new Thread(new Runnable(){
 			@Override
 			public void run() {
@@ -27,7 +29,7 @@ public class  ChatServer {
 	
 	
 	public void process() throws Exception  {
-		ServerSocket server = new ServerSocket(10007, 10, IPserver);
+		ServerSocket server = new ServerSocket(port, 10, IPserver);
 //		ServerSocket server = new ServerSocket(9883, 10);
 		out.println("Server Started...");
 		while( true) {

@@ -22,7 +22,11 @@ import java.awt.Color;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+
+import tags.Tags;
+import client.*;
 
 public class ServerGui {
 	public static int port = 9600;
@@ -225,9 +229,23 @@ public class ServerGui {
 		
 		JMenuItem mntmMe = new JMenuItem("Us");
 		mnNewMenu.add(mntmMe);
+		mntmMe.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JOptionPane.showMessageDialog(mntmMe, "Nguyen Dang Ha Nam: 1710195\nNguyen Thi Truc Ly:      1710187\nTran Ho Minh Thong:     1710314", "About Us", 1);
+			}
+		});
 		
-		JMenuItem mntmSoftware = new JMenuItem("Software");
-		mnNewMenu.add(mntmSoftware);
+		JMenuItem mntmVersion = new JMenuItem("Version");
+		mnNewMenu.add(mntmVersion);
+		mntmVersion.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JOptionPane.showMessageDialog(mntmMe, "version 1.1 update 4/11/2019", "Version", 1);
+				}
+		});
 		btn_start.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

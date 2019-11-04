@@ -6,6 +6,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -149,11 +153,39 @@ public class ChatGui {
 		frameChatGui = new JFrame();
 		frameChatGui.setTitle("Welcome: " + nameUser);
 		frameChatGui.setResizable(false);
-		frameChatGui.setBounds(200, 200, 673, 545);
+		frameChatGui.setBounds(200, 200, 673, 570);
 		frameChatGui.getContentPane().setLayout(null);
 		frameChatGui.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frameChatGui.setLocationRelativeTo(null);
-
+		
+		
+		JMenuBar menuBar = new JMenuBar();
+		frameChatGui.setJMenuBar(menuBar);
+		
+		JMenu mnNewMenu = new JMenu("About");
+		menuBar.add(mnNewMenu);
+		
+		JMenuItem mntmMe = new JMenuItem("Us");
+		mnNewMenu.add(mntmMe);
+		mntmMe.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JOptionPane.showMessageDialog(mntmMe, "Nguyen Dang Ha Nam: 1710195\nNguyen Thi Truc Ly:      1710187\nTran Ho Minh Thong:     1710314", "About Us", 1);
+			}
+		});
+		
+		JMenuItem mntmVersion = new JMenuItem("Version");
+		mnNewMenu.add(mntmVersion);
+		mntmVersion.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JOptionPane.showMessageDialog(mntmMe, "version 1.1 update 4/11/2019", "Version", 1);
+				}
+		});
+		
+		
 		JLabel lblClientIP = new JLabel("");
 		lblClientIP.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		lblClientIP.setBounds(30, 6, 41, 40);

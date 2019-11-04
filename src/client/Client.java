@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.ArrayList;
+import java.util.Random;
 
 import data.User;
 import tags.Decode;
@@ -22,7 +23,7 @@ public class Client {
 	private int port_server = 9600;
 	private String username = "";
 	private boolean stop = false;
-	private static int port_client = 10000; 
+	private static int port_client = 10000, port_group = 11000; 
 	private int timeout = 10000;  //time to each request is 10 seconds.
 	private Socket socket_client;
 	private ObjectInputStream server_input;
@@ -116,14 +117,18 @@ public class Client {
 //		}
 		
 		int size = clients.size();
+		Random rd =  new Random();
+		port_group = port_group + rd.nextInt(999);
 		ArrayList<String> nameGuest = new ArrayList<String>();
 		for (int i = 0; i < size; i++) {
 			nameGuest.add(clients.get(i).getName());
 		}
-		new ChatServer(nameGuest, IPserver);
+		new ChatServer(nameGuest, IPserver, port_group);
+		ArrayList<String> nameTemp = new ArrayList<String>(nameGuest);
 		for (int i = 0; i < size; i++) {
 //			ChatGroupClients.main(clients.get(i).getName(), IPserver);
-			ChatRoomGUI.main(clients.get(i).getName(), IPserver, nameGuest);
+			ChatRoomGUI.main(clients.get(i).getName(), IPserver, nameTemp, port_group);
+			System.out.println("nameGuest :" + nameTemp.size());
 		}
 		
 //		int size = clients.size();
