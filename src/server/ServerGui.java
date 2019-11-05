@@ -30,7 +30,7 @@ import client.*;
 
 public class ServerGui {
 	public static int port = 9600;
-	private JFrame frmServerMangement;
+	private JFrame frmServer;
 	private JTextField txtIP, txtPort;
 	private JLabel lblStatus;
 	private static TextArea txtMessage;
@@ -42,8 +42,8 @@ public class ServerGui {
 			public void run() {
 				try {
 					ServerGui window = new ServerGui();
-					window.frmServerMangement.setVisible(true);
-					window.frmServerMangement.setLocationRelativeTo(null);
+					window.frmServer.setVisible(true);
+					window.frmServer.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -75,27 +75,27 @@ public class ServerGui {
 	}
 
 	private void initialize() {
-		frmServerMangement = new JFrame();
-		frmServerMangement.setForeground(UIManager.getColor("RadioButtonMenuItem.foreground"));
-		frmServerMangement.getContentPane().setFont(new Font("Segoe UI", Font.PLAIN, 13));
-		frmServerMangement.getContentPane().setForeground(UIManager.getColor("RadioButtonMenuItem.acceleratorSelectionForeground"));
-		frmServerMangement.setTitle("Server Mangement");
-		frmServerMangement.setResizable(false);
-		frmServerMangement.setBounds(200, 200, 730, 686);
-		frmServerMangement.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmServerMangement.getContentPane().setLayout(null);
-		frmServerMangement.setBackground(Color.ORANGE);
+		frmServer = new JFrame();
+		frmServer.setForeground(UIManager.getColor("RadioButtonMenuItem.foreground"));
+		frmServer.getContentPane().setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		frmServer.getContentPane().setForeground(UIManager.getColor("RadioButtonMenuItem.acceleratorSelectionForeground"));
+		frmServer.setTitle("Server Mangement");
+		frmServer.setResizable(false);
+		frmServer.setBounds(200, 200, 370, 315);
+		frmServer.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmServer.getContentPane().setLayout(null);
+		frmServer.setBackground(Color.ORANGE);
 
-		JLabel lblIP = new JLabel("IP ADDRESS");
+		JLabel lblIP = new JLabel("IP");
 		lblIP.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-		lblIP.setBounds(26, 120, 89, 16);					////// Vi tri lbl IP
-		frmServerMangement.getContentPane().add(lblIP);
+		lblIP.setBounds(46, 120, 15, 16);					////// Vi tri lbl IP
+		frmServer.getContentPane().add(lblIP);
 
 		txtIP = new JTextField();
 		txtIP.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		txtIP.setEditable(false);
-		txtIP.setBounds(126, 114, 176, 28);				////// Vi tri text Ip
-		frmServerMangement.getContentPane().add(txtIP);
+		txtIP.setBounds(60, 114, 90, 28);				////// Vi tri text Ip
+		frmServer.getContentPane().add(txtIP);
 		txtIP.setColumns(10);
 		
 //		try {
@@ -126,24 +126,24 @@ public class ServerGui {
 
 		JLabel lbl_new_label = new JLabel("PORT");
 		lbl_new_label.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-		lbl_new_label.setBounds(428, 120, 48, 16);			////// Vi tri lbl Port
-		frmServerMangement.getContentPane().add(lbl_new_label);
+		lbl_new_label.setBounds(200, 120, 35, 16);			////// Vi tri lbl Port
+		frmServer.getContentPane().add(lbl_new_label);
 
 		txtPort = new JTextField();
 		txtPort.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		txtPort.setEditable(false);
 		txtPort.setColumns(10);
-		txtPort.setBounds(488, 114, 224, 28);
-		frmServerMangement.getContentPane().add(txtPort);			///// Vi tri cua text Port
+		txtPort.setBounds(240, 114, 34, 28);
+		frmServer.getContentPane().add(txtPort);			///// Vi tri cua text Port
 		txtPort.setText(Integer.toString(port));
 
 		JButton btn_start = new JButton("START");
 		btn_start.setBackground(UIManager.getColor("RadioButtonMenuItem.selectionBackground"));
 		btn_start.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-		
-		btn_start.setBounds(416, 155, 143, 43);			/////// Vi tri button START
-		frmServerMangement.getContentPane().add(btn_start);
-		btn_start.setIcon(new javax.swing.ImageIcon(ServerGui.class.getResource("/image/start.png")));
+		btn_start.setEnabled(true);
+		btn_start.setBounds(46, 200, 100, 35);			/////// Vi tri button START
+		frmServer.getContentPane().add(btn_start);
+		btn_start.setIcon(new javax.swing.ImageIcon(ServerGui.class.getResource("/image/power.png")));
 		
 //		BufferedImage img = null;
 //		try {
@@ -156,21 +156,23 @@ public class ServerGui {
 //		ImageIcon imageIcon = new ImageIcon(dimg);
 
 		
-		JLabel lbl_group = new JLabel("Server Management");
+		JLabel lbl_group = new JLabel("SERVER");
 		lbl_group.setFont(new Font("Segoe UI", Font.PLAIN, 26));
-		lbl_group.setBounds(169, 13, 408, 76);
+		lbl_group.setForeground(Color.getHSBColor(24, 49, 24));
+		lbl_group.setBounds(105, 13, 408, 76);
 		lbl_group.setIcon(new javax.swing.ImageIcon(ServerGui.class.getResource("/image/group.png")));
-		frmServerMangement.getContentPane().add(lbl_group);
+		frmServer.getContentPane().add(lbl_group);
 
 		txtMessage = new TextArea();					
 		txtMessage.setBackground(Color.BLACK);
 		txtMessage.setForeground(Color.GREEN);
 		txtMessage.setFont(new Font("Consolas", Font.PLAIN, 14));
 		txtMessage.setEditable(false);
-		txtMessage.setBounds(0, 267, 714, 358);		////// Vi tri textArea
-		frmServerMangement.getContentPane().add(txtMessage);
+		txtMessage.setBounds(0, 300, 714, 358);		////// Vi tri textArea
+		frmServer.getContentPane().add(txtMessage);
 
 		JButton btnStop = new JButton("STOP");
+		btnStop.setEnabled(false);
 		btnStop.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		btnStop.addActionListener(new ActionListener() {
 
@@ -178,9 +180,14 @@ public class ServerGui {
 			public void actionPerformed(ActionEvent arg0) {
 				lblUserOnline.setText("0");
 				try {
+					btn_start.setEnabled(true);
+					btnStop.setEnabled(false);
 					server.stopserver();
 					ServerGui.updateMessage("STOP SERVER");
 					lblStatus.setText("<html><font color='red'>OFF</font></html>");
+					
+					
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 					ServerGui.updateMessage("STOP SERVER");
@@ -188,41 +195,41 @@ public class ServerGui {
 				}
 			}
 		});
-		btnStop.setBounds(571, 155, 143, 43);						//// Vi tri button Stop
-		frmServerMangement.getContentPane().add(btnStop);
-		btnStop.setIcon(new javax.swing.ImageIcon(ServerGui.class.getResource("/image/stop.png")));
+		btnStop.setBounds(200, 200, 100, 35);						//// Vi tri button Stop
+		frmServer.getContentPane().add(btnStop);
+		btnStop.setIcon(new javax.swing.ImageIcon(ServerGui.class.getResource("/image/stop16.png")));
 		
 		JLabel lblnew111 = new JLabel("STATUS");
 		lblnew111.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-		lblnew111.setBounds(26, 168, 89, 16);
-		frmServerMangement.getContentPane().add(lblnew111);
+		lblnew111.setBounds(46, 168, 50, 16);
+		frmServer.getContentPane().add(lblnew111);
 		
 		lblStatus = new JLabel("New label");
 		lblStatus.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-		lblStatus.setBounds(126, 168, 98, 16);
+		lblStatus.setBounds(100, 168, 100, 16);
 
 
-		frmServerMangement.getContentPane().add(lblStatus);
+		frmServer.getContentPane().add(lblStatus);
 		lblStatus.setText("<html><font color='red'>OFF</font></html>");
 		
-		JLabel lblRecord = new JLabel("LOG");
-		lblRecord.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-		lblRecord.setBounds(26, 245, 89, 16);
-		frmServerMangement.getContentPane().add(lblRecord);
+//		JLabel lblRecord = new JLabel("LOG");
+//		lblRecord.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+//		lblRecord.setBounds(26, 245, 89, 16);
+//		frmServer.getContentPane().add(lblRecord);
 		
 		JLabel lbllabelUserOnline = new JLabel("USER ONLINE");
 		lbllabelUserOnline.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-		lbllabelUserOnline.setBounds(26, 207, 89, 16);
-		frmServerMangement.getContentPane().add(lbllabelUserOnline);
+		lbllabelUserOnline.setBounds(200, 168, 89, 16);
+		frmServer.getContentPane().add(lbllabelUserOnline);
 		
 		lblUserOnline = new JLabel("0");
 		lblUserOnline.setForeground(Color.BLUE);
 		lblUserOnline.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-		lblUserOnline.setBounds(126, 207, 56, 16);
-		frmServerMangement.getContentPane().add(lblUserOnline);
+		lblUserOnline.setBounds(295, 168, 56, 16);
+		frmServer.getContentPane().add(lblUserOnline);
 		
 		JMenuBar menuBar = new JMenuBar();
-		frmServerMangement.setJMenuBar(menuBar);
+		frmServer.setJMenuBar(menuBar);
 		
 		JMenu mnNewMenu = new JMenu("About");
 		menuBar.add(mnNewMenu);
@@ -252,7 +259,9 @@ public class ServerGui {
 				try {
 					server = new Server(port);
 					ServerGui.updateMessage("START SERVER");
-					lblStatus.setText("<html><font color='green'>RUNNING...</font></html>");
+					lblStatus.setText("<html><font color='green'>RUNNING</font></html>");
+					btn_start.setEnabled(false);
+					btnStop.setEnabled(true);
 				} catch (Exception e) {
 					ServerGui.updateMessage("START ERROR");
 					e.printStackTrace();
