@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 import data.User;
+import login.Login;
 
 import javax.swing.JLabel;
 
@@ -35,7 +36,7 @@ public class MainGui {
 	private static int portClient = 0;
 	private JFrame frameMainGui;
 	private JTextField txtNameFriend, txtNameGroup;
-	private JButton btnChat, btnExit, btnChatRoom, btnAdd, btnClear;
+	private JButton btnChat, btnLogout, btnChatRoom, btnAdd, btnClear;
 	private JLabel lblLogo;
 	private JLabel lblActiveNow;
 	private static JList<String> listActive;
@@ -104,7 +105,7 @@ public class MainGui {
 		JMenu mnNewMenu = new JMenu("About");
 		menuBar.add(mnNewMenu);
 		
-		JMenuItem mntmMe = new JMenuItem("Us");
+		JMenuItem mntmMe = new JMenuItem("Author");
 		mnNewMenu.add(mntmMe);
 		mntmMe.addActionListener(new ActionListener() {
 			@Override
@@ -269,11 +270,11 @@ public class MainGui {
 				newPeer.setPeer(nameUser, IPClient, portClient);
 				clients.add(newPeer);
 				try {
-					clientNode.intialNewChatRoom(clients);
-					clients = new ArrayList<User>();
 					nameGroup = "";
 					txtNameGroup.setText(nameGroup);
 					nameMember.clear();
+					clientNode.intialNewChatRoom(clients);
+					clients = new ArrayList<User>();
 					return;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -287,13 +288,14 @@ public class MainGui {
 		
 		
 		
-		btnExit = new JButton("Exit");
-		btnExit.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-		btnExit.addActionListener(new ActionListener() {
+		btnLogout = new JButton("Logout");
+		btnLogout.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int result = Tags.show(frameMainGui, "Are you sure ?", true);
+				int result = Tags.show(frameMainGui, "Are you sure want to logout ?", true);
 				if (result == 0) {
 					try {
+						Login.main(null);
 						clientNode.exit();
 						frameMainGui.dispose();
 					} catch (Exception e) {
@@ -302,9 +304,9 @@ public class MainGui {
 				}
 			}
 		});
-		btnExit.setBounds(403, 505, 129, 44);
-		btnExit.setIcon(new javax.swing.ImageIcon(MainGui.class.getResource("/image/stop.png")));
-		frameMainGui.getContentPane().add(btnExit);
+		btnLogout.setBounds(403, 505, 129, 44);
+		btnLogout.setIcon(new javax.swing.ImageIcon(MainGui.class.getResource("/image/logout.png")));
+		frameMainGui.getContentPane().add(btnLogout);
 		
 		lblLogo = new JLabel("CHAT APPLICATION");
 		lblLogo.setForeground(new Color(0, 0, 205));

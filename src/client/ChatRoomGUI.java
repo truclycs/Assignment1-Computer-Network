@@ -104,7 +104,7 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
 		JMenu mnNewMenu = new JMenu("About");
 		menuBar.add(mnNewMenu);
 		
-		JMenuItem mntmMe = new JMenuItem("Us");
+		JMenuItem mntmMe = new JMenuItem("Author");
 		mnNewMenu.add(mntmMe);
 		mntmMe.addActionListener(new ActionListener() {
 			@Override

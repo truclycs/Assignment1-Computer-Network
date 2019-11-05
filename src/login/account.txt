@@ -5,3 +5,5 @@ name 1234567 1
 Nguyen 741236 1
 trucly 123654 0
 thong 123456 1
+male 123456 1
+female 123456 0

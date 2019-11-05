@@ -110,9 +110,9 @@ public class Login {
         
         JLabel lblPassword = new JLabel("Passwords");
         lblPassword.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        lblPassword.setBounds(46, 170, 106, 38);
+        lblPassword.setBounds(15, 170, 106, 38);
         frameLoginForm.getContentPane().add(lblPassword);
-        
+        lblPassword.setIcon(new javax.swing.ImageIcon(Login.class.getResource("/image/shield.png")));
         
         
         lblError = new JLabel("");

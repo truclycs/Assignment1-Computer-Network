@@ -94,7 +94,7 @@ public class ServerGui {
 		txtIP = new JTextField();
 		txtIP.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		txtIP.setEditable(false);
-		txtIP.setBounds(60, 114, 90, 28);				////// Vi tri text Ip
+		txtIP.setBounds(60, 114, 105, 28);				////// Vi tri text Ip
 		frmServer.getContentPane().add(txtIP);
 		txtIP.setColumns(10);
 		
@@ -234,7 +234,7 @@ public class ServerGui {
 		JMenu mnNewMenu = new JMenu("About");
 		menuBar.add(mnNewMenu);
 		
-		JMenuItem mntmMe = new JMenuItem("Us");
+		JMenuItem mntmMe = new JMenuItem("Author");
 		mnNewMenu.add(mntmMe);
 		mntmMe.addActionListener(new ActionListener() {
 			@Override
