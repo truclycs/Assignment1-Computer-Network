@@ -31,7 +31,6 @@ public class Client {
 	private Socket socket_client;
 	private ObjectInputStream server_input;
 	private ObjectOutputStream server_output;
-	private int isChatRoom = 1;
 	
 	public Client(String arg, int arg1, String name, String data_user) throws Exception {
 		IPserver = InetAddress.getByName(arg);
@@ -46,7 +45,7 @@ public class Client {
 				updateFriend();
 			}
 		}).start();
-		server = new ClientServer(username, isChatRoom, port_group, IPserver);
+		server = new ClientServer(username, port_group, IPserver);
 		(new Request()).start();
 	}
 
@@ -97,10 +96,9 @@ public class Client {
 	}
 
 	public void intialNewChat(String IP, int host, String guest) throws Exception {
-		isChatRoom = 1;
 		final Socket connclient = new Socket(InetAddress.getByName(IP), host);
 		ObjectOutputStream send_request = new ObjectOutputStream(connclient.getOutputStream());
-		send_request.writeObject(Encode.sendRequestChat(username));
+		send_request.writeObject(Encode.sendRequestChat("0" + username));
 		send_request.flush();
 		ObjectInputStream recieved = new ObjectInputStream(connclient.getInputStream());
 		String mess = (String) recieved.readObject();
@@ -114,22 +112,21 @@ public class Client {
 	
 	// update 1/11/19
 	public void intialNewChatRoom(ArrayList<User> clients) throws Exception {
-			
-		
-		isChatRoom = 0;
 		int size = clients.size();
 		ArrayList<String> nameGuest = new ArrayList<String>();
-		for (int i = 0; i < size; i++) {
+		String strNameGuest = "";
+		for (int i = 0; i < size - 1; i++) {
 			nameGuest.add(clients.get(i).getName());
+			strNameGuest = strNameGuest + "-" + clients.get(i).getName();
 		}
-		System.out.println("client port server: " + port_group);
+		strNameGuest = strNameGuest + "-" + clients.get(clients.size() - 1).getName();
 		new ChatServer(nameGuest, IPserver, port_group);
 		ArrayList<String> nameTemp = new ArrayList<String>(nameGuest);
 		Socket connclient;
 		for (int i = 0; i < size - 1; i++) {
 			connclient = new Socket(InetAddress.getByName(clients.get(i).getHost()), clients.get(i).getPort());
 			ObjectOutputStream send_request = new ObjectOutputStream(connclient.getOutputStream());
-			send_request.writeObject(Encode.sendRequestChat(username));
+			send_request.writeObject(Encode.sendRequestChat("1" + username + strNameGuest));
 			send_request.flush();
 			ObjectInputStream recieved = new ObjectInputStream(connclient.getInputStream());
 			String mess = (String) recieved.readObject();

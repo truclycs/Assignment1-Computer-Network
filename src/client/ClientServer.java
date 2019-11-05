@@ -20,7 +20,6 @@ public class ClientServer {
 	private ServerSocket serverClient;
 	private int port, port_group;
 	private boolean isStop = false;
-	private int isChatRoomGUI;
 	private InetAddress IPserver;
 
 //	public void stopServerPeer() {
@@ -31,11 +30,10 @@ public class ClientServer {
 //		return isStop;
 //	}
 
-	public ClientServer(String name, int isChatRoom, int portGroup, InetAddress IPServer) throws Exception {
+	public ClientServer(String name, int portGroup, InetAddress IPServer) throws Exception {
 		username = name;
 		port = Client.getPort();
 		serverClient = new ServerSocket(port);
-		isChatRoomGUI = isChatRoom;
 		port_group = portGroup;
 		IPserver = IPServer;
 		(new WaitPeerConnect()).start();
@@ -60,6 +58,11 @@ public class ClientServer {
 					getRequest = new ObjectInputStream(connection.getInputStream());
 					String msg = (String) getRequest.readObject();
 					String name = Decode.getNameRequestChat(msg);
+					String isRoom = name.substring(0, 1);
+					name = name.substring(1);
+					String[] totalName = name.split("-");
+					name = totalName[0];
+					
 					int res = MainGui.request("Account: " + name + " want to connect with you !", true);
 					ObjectOutputStream send = new ObjectOutputStream(connection.getOutputStream());
 					if (res == 1) {
@@ -67,10 +70,14 @@ public class ClientServer {
 
 					} else if (res == 0) {
 						send.writeObject(Tags.CHAT_ACCEPT_TAG);
-						System.out.println("port_group = " + port_group + " isChatRoom " + isChatRoomGUI);
-						if(isChatRoomGUI == 1) {
+						System.out.println("port_group = " + port_group);
+						if(isRoom.equals("1")) {
 							ArrayList<String> nameTemp = new ArrayList<String>();
-							nameTemp.add("Group");
+							for (int i = 0; i < totalName.length - 1; i++) {
+								System.out.println(totalName[i]);
+								nameTemp.add(totalName[i]);
+							}
+//							nameTemp.add("Group");
 							System.out.println(IPserver + "   "  + username);
 							
 							ChatRoomGUI.main(username, IPserver, nameTemp, port_group);
