@@ -29,6 +29,7 @@ public class  ChatServer {
 	
 	
 	public void process() throws Exception  {
+		out.println("port Server Group: " + port);
 		ServerSocket server = new ServerSocket(port, 10, IPserver);
 //		ServerSocket server = new ServerSocket(9883, 10);
 		out.println("Server Started...");
@@ -72,7 +73,7 @@ public class  ChatServer {
 			try {
 				while(true) {
 					line = input.readLine();
-					if ( line.equals("end") ) {
+					if ( line.equals("end-server") ) {
 						clients.remove(this);
 						users.remove(name);
 						break;

@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import data.User;
 import tags.Decode;
@@ -19,33 +20,42 @@ public class Client {
 
 	public static ArrayList<User> clientarray = null;
 	private ClientServer server;
-	private InetAddress IPserver;
+	private static InetAddress IPserver;
 	private int port_server = 9600;
 	private String username = "";
 	private boolean stop = false;
-	private static int port_client = 10000, port_group = 11000; 
+//	private Random rd =  new Random();
+	private static int port_client = 10000;
+	private static int port_group = 11000;
 	private int timeout = 10000;  //time to each request is 10 seconds.
 	private Socket socket_client;
 	private ObjectInputStream server_input;
 	private ObjectOutputStream server_output;
+	private int isChatRoom = 1;
 	
 	public Client(String arg, int arg1, String name, String data_user) throws Exception {
 		IPserver = InetAddress.getByName(arg);
 		username = name;
 		port_client = arg1;
 		clientarray = Decode.getAllUser(data_user);
+//		Random rd =  new Random();
+//		port_group = port_group + rd.nextInt(999);
 		new Thread(new Runnable(){
 			@Override
 			public void run() {
 				updateFriend();
 			}
 		}).start();
-		server = new ClientServer(username);
+		server = new ClientServer(username, isChatRoom, port_group, IPserver);
 		(new Request()).start();
 	}
 
 	public static int getPort() {
 		return port_client;
+	}
+	
+	public static InetAddress getIPserver() {
+		return IPserver;
 	}
 
 	public void request() throws Exception {
@@ -87,6 +97,7 @@ public class Client {
 	}
 
 	public void intialNewChat(String IP, int host, String guest) throws Exception {
+		isChatRoom = 1;
 		final Socket connclient = new Socket(InetAddress.getByName(IP), host);
 		ObjectOutputStream send_request = new ObjectOutputStream(connclient.getOutputStream());
 		send_request.writeObject(Encode.sendRequestChat(username));
@@ -103,49 +114,57 @@ public class Client {
 	
 	// update 1/11/19
 	public void intialNewChatRoom(ArrayList<User> clients) throws Exception {
+			
 		
-//		int size = Client.clientarray.size();
-//		for (int i = 0; i < size; i++) {
-//			if (name.equals(Client.clientarray.get(i).getName())) {
-//				try {
-//					clientNode.intialNewChat(Client.clientarray.get(i).getHost(),Client.clientarray.get(i).getPort(), name);
-//					return;
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-		
+		isChatRoom = 0;
 		int size = clients.size();
-		Random rd =  new Random();
-		port_group = port_group + rd.nextInt(999);
 		ArrayList<String> nameGuest = new ArrayList<String>();
 		for (int i = 0; i < size; i++) {
 			nameGuest.add(clients.get(i).getName());
 		}
+		System.out.println("client port server: " + port_group);
 		new ChatServer(nameGuest, IPserver, port_group);
 		ArrayList<String> nameTemp = new ArrayList<String>(nameGuest);
-		for (int i = 0; i < size; i++) {
-//			ChatGroupClients.main(clients.get(i).getName(), IPserver);
-			ChatRoomGUI.main(clients.get(i).getName(), IPserver, nameTemp, port_group);
-			System.out.println("nameGuest :" + nameTemp.size());
+		Socket connclient;
+		for (int i = 0; i < size - 1; i++) {
+			connclient = new Socket(InetAddress.getByName(clients.get(i).getHost()), clients.get(i).getPort());
+			ObjectOutputStream send_request = new ObjectOutputStream(connclient.getOutputStream());
+			send_request.writeObject(Encode.sendRequestChat(username));
+			send_request.flush();
+			ObjectInputStream recieved = new ObjectInputStream(connclient.getInputStream());
+			String mess = (String) recieved.readObject();
+			if (mess.equals(Tags.CHAT_DENY_TAG)) {
+				MainGui.request("Your friend denied connect with you!", false);
+				connclient.close();
+				return;
+			}
 		}
+		ChatRoomGUI.main(clients.get(clients.size() - 1).getName(), IPserver, nameTemp, port_group);
+
+		
+
+//		ArrayList<String> nameTemp = new ArrayList<String>(nameGuest);
+//		for (int i = 0; i < size; i++) {
+////			ChatGroupClients.main(clients.get(i).getName(), IPserver);
+//			ChatRoomGUI.main(clients.get(i).getName(), IPserver, nameTemp, port_group);
+//			System.out.println("nameGuest :" + nameTemp.size());
+//		}
+		
 		
 //		int size = clients.size();
+//		Random rd =  new Random();
+//		port_group = port_group + rd.nextInt(999);
 //		ArrayList<String> nameGuest = new ArrayList<String>();
-//		ArrayList<Socket> listSocket = new ArrayList<Socket>();
-//		final Socket connclient = new Socket(InetAddress.getByName(IP), host);
-//		ObjectOutputStream send_request = new ObjectOutputStream(connclient.getOutputStream());
-//		send_request.writeObject(Encode.sendRequestChat(username));
-//		send_request.flush();
-//		ObjectInputStream recieved = new ObjectInputStream(connclient.getInputStream());
-//		String mess = (String) recieved.readObject();
-//		if (mess.equals(Tags.CHAT_DENY_TAG)) {
-//			MainGui.request("Your friend denied connect with you!", false);
-//			connclient.close();
-//			return;
+//		for (int i = 0; i < size; i++) {
+//			nameGuest.add(clients.get(i).getName());
 //		}
-//		new ChatGui(username, guest, connclient, port_client);
+//		new ChatServer(nameGuest, IPserver, port_group);
+//		ArrayList<String> nameTemp = new ArrayList<String>(nameGuest);
+//		for (int i = 0; i < size; i++) {
+////			ChatGroupClients.main(clients.get(i).getName(), IPserver);
+//			ChatRoomGUI.main(clients.get(i).getName(), IPserver, nameTemp, port_group);
+//			System.out.println("nameGuest :" + nameTemp.size());
+//		}
 	}
 
 	public void exit() throws IOException, ClassNotFoundException {

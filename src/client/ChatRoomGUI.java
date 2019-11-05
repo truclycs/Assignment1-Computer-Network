@@ -77,6 +77,7 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
         	socketChat  = new Socket(serverName, port_server);
         }catch(Exception ex) {
             out.println( "ErrorChatRoomGUI --> " + ex.getMessage());
+            out.println(serverName + "    "  + port_server + "    " + nameUser);
             ex.printStackTrace();
         }
         br = new BufferedReader( new InputStreamReader( socketChat.getInputStream()) ) ;
@@ -386,7 +387,7 @@ public class ChatRoomGUI extends JFrame implements ActionListener {
 				try {
 					isStop = true;
 					sendMessage("BYE BYE. LEAVE CHAT!!!");
-					pw.println("end");  // send end to server so that server knows about the termination
+					pw.println("end-server");  // send end to server so that server knows about the termination
 					frameChatRoomGUI.dispose();
 //					System.exit(1);
 					socketChat.close();
