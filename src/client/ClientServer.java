@@ -73,14 +73,15 @@ public class ClientServer {
 						System.out.println("port_group = " + port_group);
 						if(isRoom.equals("1")) {
 							ArrayList<String> nameTemp = new ArrayList<String>();
-							for (int i = 0; i < totalName.length - 1; i++) {
+							for (int i = 0; i < totalName.length - 2; i++) { //-1
 								System.out.println(totalName[i]);
 								nameTemp.add(totalName[i]);
 							}
 //							nameTemp.add("Group");
 							System.out.println(IPserver + "   "  + username);
 							
-							ChatRoomGUI.main(username, IPserver, nameTemp, port_group);
+//							ChatRoomGUI.main(username, IPserver, nameTemp, port_group);
+							ChatRoomGUI.main(username, InetAddress.getByName(totalName[totalName.length - 1]), nameTemp, port_group);
 //							new ChatGui(username, name, connection, port);
 						}
 						else {
