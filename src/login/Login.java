@@ -14,7 +14,6 @@ import javax.swing.JButton;
 import client.MainGui;
 import tags.Encode;
 import tags.Tags;
-import data.BackgroundPanel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -73,10 +72,9 @@ public class Login {
         frameLoginForm.setResizable(false);
         frameLoginForm.setBounds(200, 200, 550, 350);
         frameLoginForm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frameLoginForm.setContentPane(new BackgroundPanel("/image/background.png"));
         frameLoginForm.getContentPane().setLayout(null);
         frameLoginForm.setLocationRelativeTo(null);
-       
+//        frameLoginForm.setIconImage(new javax.swing.ImageIcon(Login.class.getResource("/image/login2.png")));
 
         JLabel lblWelcome = new JLabel("Connect to Server\r\n");
         lblWelcome.setForeground(UIManager.getColor("RadioButtonMenuItem.selectionBackground"));

@@ -1,4 +1,4 @@
-## MẠNG MÁY TÍNH (CO3003)
+## MẠNG MÁY TÍNH
 
 ## Bài tập lớn 1
 
@@ -11,6 +11,7 @@
    - 1.1 Login
    - 1.2 Chat riêng tư
    - 1.3 Truyền gửi file
+   - 1.4 Chat nhóm
 - 2 Định nghĩa giao thức cho từng chức năng
 - 3 Thiết kế ứng dụng
    - 3.1 Công nghệ sử dụng
@@ -39,6 +40,9 @@ có thể nhắn tin trực tiếp với nhiều user trong cùng một thời �
 Chức năng này cho phép user gửi và nhận một số file với định dạng và kích thước được quy định
 trước bởi nhà phát triển trong chat riêng tư với user khác khi được cho phép.
 
+### 1.4 Chat nhóm
+
+Chức năng này cho phép người dụng tạo nhóm chat và trò chuyện với nhau.
 
 ## 2 Định nghĩa giao thức cho từng chức năng
 
