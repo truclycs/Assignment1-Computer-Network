@@ -120,10 +120,8 @@ public class Client {
 			strNameGuest = strNameGuest + "-" + clients.get(i).getName();
 		}
 		strNameGuest = strNameGuest + "-" + clients.get(clients.size() - 1).getName();
-//		new ChatServer(nameGuest, IPserver, port_group);
-		InetAddress IPHost = InetAddress.getByName(clients.get(clients.size() - 1).getHost());
-		new ChatServer(nameGuest, IPHost, port_group);
-		strNameGuest = strNameGuest + "-" + clients.get(clients.size() - 1).getHost();
+		new ChatServer(nameGuest, IPserver, port_group);
+//		strNameGuest = strNameGuest + "-" + clients.get(clients.size() - 1).getHost();
 		
 		ArrayList<String> nameTemp = new ArrayList<String>(nameGuest);
 		Socket connclient;
